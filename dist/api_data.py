@@ -1133,7 +1133,7 @@ session_config = [
         Enable automatic detection of scans by applications, and attempt to pre-fetch future
         content into the cache''',
         type='category', subconfig=[
-        Config('enabled', 'true', r'''
+        Config('enabled', 'false', r'''
             whether pre-fetch is enabled for this session''',
             type='boolean'),
         ]),
@@ -1244,7 +1244,7 @@ wiredtiger_open_common =\
         Config('available', 'true', r'''
             whether the thread pool for the pre-fetch functionality is started''',
             type='boolean'),
-        Config('default', 'true', r'''
+        Config('default', 'false', r'''
             whether pre-fetch is enabled for all sessions by default''',
             type='boolean'),
         ]),
