@@ -42,7 +42,7 @@ __hs_cleanup_las(WT_SESSION_IMPL *session)
     conn = S2C(session);
 
     /* Read-only and in-memory configurations won't drop the lookaside. */
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
         return (0);
 
     /* The LAS table may exist on upgrade. Discard it. */
@@ -93,7 +93,7 @@ __wt_hs_config(WT_SESSION_IMPL *session, const char **cfg)
           WT_HS_FILE_MIN);
 
     /* The history store is not available for in-memory configurations. */
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY))
         return (0);
 
     WT_ERR(__hs_start_internal_session(session, &tmp_setup_session));
@@ -117,7 +117,7 @@ __wt_hs_config(WT_SESSION_IMPL *session, const char **cfg)
      * Now that we have the history store's handle, we may set the flag because we know the file is
      * open.
      */
-    F_SET(conn, WT_CONN_HS_OPEN);
+    F_SET_ATOMIC_32(conn, WT_CONN_HS_OPEN);
 
 err:
     if (tmp_setup_session != NULL)
@@ -137,7 +137,7 @@ __wt_hs_open(WT_SESSION_IMPL *session, const char **cfg)
     conn = S2C(session);
 
     /* Read-only and in-memory configurations don't need the history store table. */
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
         return (0);
 
     /* Drop the lookaside file if it still exists. */
@@ -158,5 +158,5 @@ __wt_hs_open(WT_SESSION_IMPL *session, const char **cfg)
 void
 __wt_hs_close(WT_SESSION_IMPL *session)
 {
-    F_CLR(S2C(session), WT_CONN_HS_OPEN);
+    F_CLR_ATOMIC_32(S2C(session), WT_CONN_HS_OPEN);
 }

@@ -327,7 +327,7 @@
     (s) = CUR2S(cur);                                                                         \
     SESSION_API_PREPARE_CHECK(s, WT_CURSOR, func_name);                                       \
     TXN_API_CALL_NOCONF(s, WT_CURSOR, func_name, ((WT_CURSOR_BTREE *)(cur))->dhandle);        \
-    if (F_ISSET(S2C(s), WT_CONN_IN_MEMORY) && !F_ISSET(CUR2BT(cur), WT_BTREE_IGNORE_CACHE) && \
+    if (F_ISSET_ATOMIC_32(S2C(s), WT_CONN_IN_MEMORY) && !F_ISSET(CUR2BT(cur), WT_BTREE_IGNORE_CACHE) && \
       __wt_cache_full(s))                                                                     \
         WT_ERR(WT_CACHE_FULL);
 

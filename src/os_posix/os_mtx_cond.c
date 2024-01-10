@@ -165,7 +165,8 @@ __wt_cond_signal(WT_SESSION_IMPL *session, WT_CONDVAR *cond)
      * Fast path if we are in (or can enter), a state where the next waiter will return immediately
      * as already signaled.
      */
-    if (cond->waiters == -1 || (cond->waiters == 0 && __wt_atomic_casi32(&cond->waiters, 0, -1)))
+    if (__wt_atomic_loadi32(&cond->waiters) == -1 ||
+      (__wt_atomic_loadi32(&cond->waiters) == 0 && __wt_atomic_casi32(&cond->waiters, 0, -1)))
         return;
 
     WT_ERR(pthread_mutex_lock(&cond->mtx));

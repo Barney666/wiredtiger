@@ -26,7 +26,7 @@ __wt_lsm_manager_config(WT_SESSION_IMPL *session, const char **cfg)
 
     WT_RET(__wt_config_gets(session, cfg, "lsm_manager.merge", &cval));
     if (cval.val)
-        F_SET(conn, WT_CONN_LSM_MERGE);
+        F_SET_ATOMIC_32(conn, WT_CONN_LSM_MERGE);
     WT_RET(__wt_config_gets(session, cfg, "lsm_manager.worker_thread_max", &cval));
     if (cval.val)
         conn->lsm_manager.lsm_workers_max = (uint32_t)cval.val;
@@ -191,7 +191,7 @@ __wt_lsm_manager_start(WT_SESSION_IMPL *session)
     /*
      * If readonly or the manager is running, or we've already failed, there's no work to do.
      */
-    if (F_ISSET(conn, WT_CONN_READONLY) || manager->lsm_workers != 0 ||
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY) || manager->lsm_workers != 0 ||
       F_ISSET(manager, WT_LSM_MANAGER_SHUTDOWN))
         return (0);
 
@@ -214,7 +214,7 @@ __wt_lsm_manager_start(WT_SESSION_IMPL *session)
         manager->lsm_worker_cookies[i].tid.name_index = (uint16_t)i;
     }
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_LSM);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LSM);
 
     /* Start the LSM manager thread. */
     WT_ERR(__wt_thread_create(session, &manager->lsm_worker_cookies[0].tid, __lsm_worker_manager,
@@ -270,9 +270,9 @@ __wt_lsm_manager_destroy(WT_SESSION_IMPL *session)
     removed = 0;
 
     /* Clear the LSM server flag. */
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_LSM);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LSM);
 
-    WT_ASSERT(session, !F_ISSET(conn, WT_CONN_READONLY) || manager->lsm_workers == 0);
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY) || manager->lsm_workers == 0);
     if (manager->lsm_workers > 0) {
         /* Wait for the main LSM manager thread to finish. */
         while (!F_ISSET(manager, WT_LSM_MANAGER_SHUTDOWN)) {
@@ -352,7 +352,7 @@ __lsm_manager_run_server(WT_SESSION_IMPL *session)
     conn = S2C(session);
     dhandle_locked = false;
 
-    while (FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LSM)) {
+    while (FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LSM)) {
         __wt_sleep(0, 10 * WT_THOUSAND);
         if (TAILQ_EMPTY(&conn->lsmqh))
             continue;
@@ -572,7 +572,7 @@ __wt_lsm_manager_push_entry(
 
     manager = &S2C(session)->lsm_manager;
 
-    WT_ASSERT(session, !F_ISSET(S2C(session), WT_CONN_READONLY));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY));
     /*
      * Don't add merges or bloom filter creates if merges or bloom filters are disabled in the tree.
      */

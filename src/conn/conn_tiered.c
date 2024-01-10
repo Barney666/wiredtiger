@@ -26,7 +26,7 @@
 static bool
 __tiered_server_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_TIERED));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_TIERED));
 }
 
 /*
@@ -496,7 +496,7 @@ __wt_tiered_storage_create(WT_SESSION_IMPL *session)
     /* Start the internal thread. */
     WT_ERR(__wt_cond_alloc(session, "flush tier", &conn->flush_cond));
     WT_ERR(__wt_cond_alloc(session, "storage server", &conn->tiered_cond));
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_TIERED);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_TIERED);
 
     WT_ERR(__wt_open_internal_session(conn, "tiered-server", true, 0, 0, &conn->tiered_session));
     session = conn->tiered_session;
@@ -506,14 +506,14 @@ __wt_tiered_storage_create(WT_SESSION_IMPL *session)
      * right now because it would entail opening and getting the dhandle for every table and that
      * work is already done in the flush_tier. So do it there and keep that code together.
      */
-    F_SET(conn, WT_CONN_TIERED_FIRST_FLUSH);
+    F_SET_ATOMIC_32(conn, WT_CONN_TIERED_FIRST_FLUSH);
     /* Start the thread. */
     WT_ERR(__wt_thread_create(session, &conn->tiered_tid, __tiered_server, session));
     conn->tiered_tid_set = true;
 
     if (0) {
 err:
-        FLD_CLR(conn->server_flags, WT_CONN_SERVER_TIERED);
+        FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_TIERED);
         WT_TRET(__wt_tiered_storage_destroy(session, false));
     }
     return (ret);
@@ -542,7 +542,7 @@ __wt_tiered_storage_destroy(WT_SESSION_IMPL *session, bool final_flush)
         __wt_cond_signal(session, conn->tiered_cond);
         __wt_tiered_flush_work_wait(session, 30);
     }
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_TIERED);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_TIERED);
     if (conn->tiered_tid_set) {
         WT_ASSERT(session, conn->tiered_cond != NULL);
         __wt_cond_signal(session, conn->tiered_cond);

@@ -99,7 +99,7 @@ __capacity_config(WT_SESSION_IMPL *session, const char *cfg[])
 static bool
 __capacity_server_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_CAPACITY));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_CAPACITY));
 }
 
 /*
@@ -156,7 +156,7 @@ __capacity_server_start(WT_CONNECTION_IMPL *conn)
 {
     WT_SESSION_IMPL *session;
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_CAPACITY);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CAPACITY);
 
     /*
      * The capacity server gets its own session.
@@ -203,7 +203,7 @@ __wt_capacity_server_create(WT_SESSION_IMPL *session, const char *cfg[])
      * If it is a read only connection or if background fsync is not supported, then there is
      * nothing to do.
      */
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY) || !__wt_fsync_background_chk(session))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY) || !__wt_fsync_background_chk(session))
         return (0);
 
     if (conn->capacity.total != 0)
@@ -224,7 +224,7 @@ __wt_capacity_server_destroy(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
 
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_CAPACITY);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CAPACITY);
     if (conn->capacity_tid_set) {
         __wt_cond_signal(session, conn->capacity_cond);
         WT_TRET(__wt_thread_join(session, &conn->capacity_tid));
@@ -307,7 +307,7 @@ __throttle_chunkcache(WT_SESSION_IMPL *session, WT_CAPACITY *cap, uint64_t bytes
     WT_STAT_CONN_INCRV(session, capacity_bytes_chunkcache, bytes);
     WT_STAT_CONN_INCRV(session, capacity_bytes_written, bytes);
 
-    if (capacity == 0 || F_ISSET(S2C(session), WT_CONN_RECOVERING))
+    if (capacity == 0 || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_RECOVERING))
         return;
 
     __capacity_signal(session);
@@ -394,7 +394,7 @@ __wt_capacity_throttle(WT_SESSION_IMPL *session, uint64_t bytes, WT_THROTTLE_TYP
      * consider one subsystem may be turned off at some point in the future. If this subsystem is
      * not throttled there's nothing to do.
      */
-    if (cap->total == 0 || capacity == 0 || F_ISSET(conn, WT_CONN_RECOVERING))
+    if (cap->total == 0 || capacity == 0 || F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
         return;
 
     /*

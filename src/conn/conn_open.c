@@ -77,10 +77,10 @@ __wt_connection_close(WT_CONNECTION_IMPL *conn)
      * The LSM services are not shut down in this path (which is called when wiredtiger_open hits an
      * error (as well as during normal shutdown). Assert they're not running.
      */
-    WT_ASSERT(session, !FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LSM));
+    WT_ASSERT(session, !FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LSM));
 
     /* Shut down the subsystems, ensuring workers see the state change. */
-    F_SET(conn, WT_CONN_CLOSING);
+    F_SET_ATOMIC_32(conn, WT_CONN_CLOSING);
     WT_FULL_BARRIER();
 
     /* The default session is used to access data handles during close. */
@@ -105,7 +105,7 @@ __wt_connection_close(WT_CONNECTION_IMPL *conn)
     WT_TRET(__wt_capacity_server_destroy(session));
 
     /* There should be no more file opens after this point. */
-    F_SET(conn, WT_CONN_CLOSING_NO_MORE_OPENS);
+    F_SET_ATOMIC_32(conn, WT_CONN_CLOSING_NO_MORE_OPENS);
     WT_FULL_BARRIER();
 
     /* Close open data handles. */
@@ -178,7 +178,7 @@ __wt_connection_close(WT_CONNECTION_IMPL *conn)
      * The session split stash, hazard information and handle arrays aren't discarded during normal
      * session close, they persist past the life of the session. Discard them now.
      */
-    if (!F_ISSET(conn, WT_CONN_LEAK_MEMORY))
+    if (!F_ISSET_ATOMIC_32(conn, WT_CONN_LEAK_MEMORY))
         if ((s = WT_CONN_SESSIONS_GET(conn)) != NULL)
             for (i = 0; i < conn->session_array.size; ++s, ++i) {
                 __wt_free(session, s->cursor_cache);

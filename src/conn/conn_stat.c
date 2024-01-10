@@ -497,7 +497,7 @@ __statlog_log_one(WT_SESSION_IMPL *session, WT_ITEM *path, WT_ITEM *tmp)
      * sources. Statistics logging starts before recovery is run. Only walk the handles after the
      * connection completes recovery.
      */
-    if (conn->stat_sources != NULL && F_ISSET(conn, WT_CONN_RECOVERY_COMPLETE))
+    if (conn->stat_sources != NULL && F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERY_COMPLETE))
         WT_RET(__wt_conn_btree_apply(session, NULL, __statlog_apply, NULL, NULL));
 
     /*
@@ -506,7 +506,7 @@ __statlog_log_one(WT_SESSION_IMPL *session, WT_ITEM *path, WT_ITEM *tmp)
      *
      * XXX This code should be removed when LSM objects are converted to data handles.
      */
-    if (conn->stat_sources != NULL && F_ISSET(conn, WT_CONN_RECOVERY_COMPLETE))
+    if (conn->stat_sources != NULL && F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERY_COMPLETE))
         WT_RET(__statlog_lsm_apply(session));
     WT_RET(__statlog_print_footer(session));
 
@@ -530,7 +530,7 @@ __statlog_on_close(WT_SESSION_IMPL *session)
     if (!FLD_ISSET(conn->stat_flags, WT_STAT_ON_CLOSE))
         return (0);
 
-    if (FLD_ISSET(conn->server_flags, WT_CONN_SERVER_STATISTICS))
+    if (FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_STATISTICS))
         WT_RET_MSG(session, EINVAL, "Attempt to log statistics while a server is running");
 
     WT_RET(__wt_scr_alloc(session, strlen(conn->stat_path) + 128, &tmp));
@@ -549,7 +549,7 @@ err:
 static bool
 __statlog_server_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_STATISTICS));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_STATISTICS));
 }
 
 /*
@@ -616,7 +616,7 @@ __statlog_start(WT_CONNECTION_IMPL *conn)
     if (conn->stat_session != NULL)
         return (0);
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_STATISTICS);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_STATISTICS);
 
     /* The statistics log server gets its own session. */
     WT_RET(__wt_open_internal_session(conn, "statlog-server", true, 0, 0, &conn->stat_session));
@@ -652,7 +652,7 @@ __wt_statlog_create(WT_SESSION_IMPL *session, const char *cfg[])
     conn = S2C(session);
 
     /* Readonly systems don't configure statistics logging. */
-    if (F_ISSET(conn, WT_CONN_READONLY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
         return (0);
 
     /*
@@ -691,11 +691,11 @@ __wt_statlog_destroy(WT_SESSION_IMPL *session, bool is_close)
     conn = S2C(session);
 
     /* Readonly systems don't configure statistics logging. */
-    if (F_ISSET(conn, WT_CONN_READONLY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
         return (0);
 
     /* Stop the server thread. */
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_STATISTICS);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_STATISTICS);
     if (conn->stat_tid_set) {
         __wt_cond_signal(session, conn->stat_cond);
         WT_TRET(__wt_thread_join(session, &conn->stat_tid));

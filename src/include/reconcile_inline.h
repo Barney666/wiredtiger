@@ -511,7 +511,7 @@ __wt_rec_time_window_clear_obsolete(
      * create an extra update on the end of the chain later in reconciliation as we'll re-append the
      * disk image value to the update chain.
      */
-    if (!tw->prepare && !F_ISSET(S2C(session), WT_CONN_IN_MEMORY)) {
+    if (!tw->prepare && !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY)) {
         /*
          * Check if the start of the time window is globally visible, and if so remove unnecessary
          * values.

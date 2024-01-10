@@ -24,7 +24,7 @@ __lsm_meta_read_v0(WT_SESSION_IMPL *session, WT_LSM_TREE *lsm_tree, const char *
     chunk = NULL; /* -Wconditional-uninitialized */
 
     /* LSM trees inherit the merge setting from the connection. */
-    if (F_ISSET(S2C(session), WT_CONN_LSM_MERGE))
+    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_LSM_MERGE))
         F_SET(lsm_tree, WT_LSM_TREE_MERGES);
 
     __wt_config_init(session, &cparser, lsmconf);
@@ -376,7 +376,7 @@ __wt_lsm_meta_read(WT_SESSION_IMPL *session, WT_LSM_TREE *lsm_tree)
     bool upgrade;
 
     /* LSM trees inherit the merge setting from the connection. */
-    if (F_ISSET(S2C(session), WT_CONN_LSM_MERGE))
+    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_LSM_MERGE))
         F_SET(lsm_tree, WT_LSM_TREE_MERGES);
 
     WT_RET(__wt_metadata_search(session, lsm_tree->name, &lsmconf));

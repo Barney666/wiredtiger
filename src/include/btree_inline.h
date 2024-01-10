@@ -801,7 +801,7 @@ __wt_page_modify_clear(WT_SESSION_IMPL *session, WT_PAGE *page)
      */
     if (__wt_page_is_modified(page)) {
         WT_ASSERT_ALWAYS(session,
-          F_ISSET(session->dhandle, WT_DHANDLE_DEAD) || F_ISSET(S2C(session), WT_CONN_CLOSING) ||
+          F_ISSET(session->dhandle, WT_DHANDLE_DEAD) || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING) ||
             !__wt_page_is_reconciling(page),
           "Illegal attempt to mark a page clean that is being reconciled");
 

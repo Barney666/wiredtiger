@@ -183,7 +183,8 @@ __wt_readlock(WT_SESSION_IMPL *session, WT_RWLOCK *l)
         /*
          * Fast path: if there is no active writer, join the current group.
          */
-        for (old.u.v = l->u.v; old.u.s.current == old.u.s.next; old.u.v = l->u.v) {
+        for (old.u.v = __wt_atomic_loadv64(&l->u.v); old.u.s.current == old.u.s.next;
+             old.u.v = __wt_atomic_loadv64(&l->u.v)) {
             new.u.v = old.u.v;
             /*
              * Check for overflow: if the maximum number of readers are already active, no new
@@ -283,7 +284,7 @@ __wt_readunlock(WT_SESSION_IMPL *session, WT_RWLOCK *l)
     WT_RWLOCK new, old;
 
     do {
-        old.u.v = l->u.v;
+        old.u.v = __wt_atomic_loadv64(&l->u.v);
         WT_ASSERT(session, old.u.s.readers_active > 0);
 
         /*

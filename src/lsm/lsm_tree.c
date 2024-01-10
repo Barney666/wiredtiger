@@ -344,7 +344,7 @@ __wt_lsm_tree_create(WT_SESSION_IMPL *session, const char *uri, bool exclusive, 
     }
     WT_RET_NOTFOUND_OK(ret);
 
-    if (!F_ISSET(S2C(session), WT_CONN_READONLY)) {
+    if (!F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY)) {
         /* LSM doesn't yet support the 'r' format. */
         WT_ERR(__wt_config_gets(session, cfg, "key_format", &cval));
         if (WT_STRING_MATCH("r", cval.str, cval.len))
@@ -1088,7 +1088,7 @@ __wt_lsm_compact(WT_SESSION_IMPL *session, const char *name, bool *skipp)
 
     WT_RET(__wt_lsm_tree_get(session, name, false, &lsm_tree));
 
-    if (!F_ISSET(S2C(session), WT_CONN_LSM_MERGE))
+    if (!F_ISSET_ATOMIC_32(S2C(session), WT_CONN_LSM_MERGE))
         WT_ERR_MSG(session, EINVAL, "LSM compaction requires active merge threads");
 
     /*

@@ -112,7 +112,7 @@ err:
 static bool
 __chunkcache_metadata_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA));
 }
 
 /*
@@ -278,7 +278,7 @@ __wt_chunkcache_metadata_create(WT_SESSION_IMPL *session)
     }
     WT_ERR(ret);
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
 
     WT_ERR(__wt_open_internal_session(
       conn, "chunkcache-metadata-server", true, 0, 0, &conn->chunkcache_metadata_session));
@@ -295,7 +295,7 @@ __wt_chunkcache_metadata_create(WT_SESSION_IMPL *session)
 
     if (0) {
 err:
-        FLD_CLR(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
+        FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
         WT_TRET(__wt_chunkcache_metadata_destroy(session));
     }
     __wt_free(session, metadata_config);
@@ -321,7 +321,7 @@ __wt_chunkcache_metadata_destroy(WT_SESSION_IMPL *session)
     if (!F_ISSET(chunkcache, WT_CHUNKCACHE_CONFIGURED) || chunkcache->type != WT_CHUNKCACHE_FILE)
         return (0);
 
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CHUNKCACHE_METADATA);
     if (conn->chunkcache_metadata_tid_set) {
         WT_ASSERT(session, conn->chunkcache_metadata_cond != NULL);
         WT_TRET(__wt_thread_join(session, &conn->chunkcache_metadata_tid));

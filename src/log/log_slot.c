@@ -412,7 +412,7 @@ __wt_log_slot_switch(
             WT_TRET(__wt_panic(session, ret, "log slot switch fatal error"));
 
         WT_RET(WT_SESSION_CHECK_PANIC(session));
-        if (F_ISSET(S2C(session), WT_CONN_CLOSING))
+        if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING))
             break;
     } while (F_ISSET(myslot, WT_MYSLOT_CLOSE) || (retry && ret == EBUSY));
     return (ret);

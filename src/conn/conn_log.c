@@ -330,7 +330,7 @@ __wt_logmgr_config(WT_SESSION_IMPL *session, const char **cfg, bool reconfig)
 
     WT_RET(__wt_config_gets(session, cfg, "log.zero_fill", &cval));
     if (cval.val != 0) {
-        if (F_ISSET(conn, WT_CONN_READONLY))
+        if (F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
             WT_RET_MSG(
               session, EINVAL, "Read-only configuration incompatible with zero-filling log files");
         FLD_SET(conn->log_flags, WT_CONN_LOG_ZERO_FILL);
@@ -557,7 +557,7 @@ __wt_log_truncate_files(WT_SESSION_IMPL *session, WT_CURSOR *cursor, bool force)
     conn = S2C(session);
     if (!FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED))
         return (0);
-    if (!force && FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LOG) &&
+    if (!force && FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG) &&
       FLD_ISSET(conn->log_flags, WT_CONN_LOG_REMOVE))
         WT_RET_MSG(session, EINVAL, "Attempt to remove manually while a server is running");
 
@@ -597,7 +597,7 @@ __log_file_server(void *arg)
     session = arg;
     conn = S2C(session);
     log = conn->log;
-    while (FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LOG)) {
+    while (FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG)) {
         /*
          * If there is a log file to close, make sure any outstanding write operations have
          * completed, then fsync and close it.
@@ -821,7 +821,7 @@ __log_wrlsn_server(void *arg)
     log = conn->log;
     yield = 0;
     WT_INIT_LSN(&prev);
-    while (FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LOG)) {
+    while (FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG)) {
         /*
          * Write out any log record buffers if anything was done since last time. Only call the
          * function to walk the slots if the system is not idle. On an idle system the alloc_lsn
@@ -893,7 +893,7 @@ __log_server(void *arg)
      * records sitting in the buffer over the time it takes to sync out an earlier file.
      */
     did_work = true;
-    while (FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LOG)) {
+    while (FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG)) {
         /*
          * Slots depend on future activity. Force out buffered writes in case we are idle. This
          * cannot be part of the wrlsn thread because of interaction advancing the write_lsn and a
@@ -1030,7 +1030,7 @@ __wt_logmgr_open(WT_SESSION_IMPL *session)
     if (!FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED))
         return (0);
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_LOG);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG);
 
     /*
      * Start the log close thread. It is not configurable. If logging is enabled, this thread runs.
@@ -1102,7 +1102,7 @@ __wt_logmgr_destroy(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
 
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_LOG);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG);
 
     if (!FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED)) {
         /*

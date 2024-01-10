@@ -163,7 +163,7 @@ __checkpoint_flush_tier(WT_SESSION_IMPL *session, bool force)
     WT_ERR(__wt_metadata_cursor_release(session, &cursor));
 
     /* Clear the flag on success. */
-    F_CLR(conn, WT_CONN_TIERED_FIRST_FLUSH);
+    F_CLR_ATOMIC_32(conn, WT_CONN_TIERED_FIRST_FLUSH);
     return (0);
 
 err:
@@ -802,12 +802,12 @@ __checkpoint_prepare(WT_SESSION_IMPL *session, bool *trackingp, const char *cfg[
                   __wt_timestamp_to_string(txn_global->stable_timestamp, ts_string[1]));
             }
             txn_global->checkpoint_timestamp = txn_global->stable_timestamp;
-            if (!F_ISSET(conn, WT_CONN_RECOVERING))
+            if (!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
                 txn_global->meta_ckpt_timestamp = txn_global->checkpoint_timestamp;
-        } else if (!F_ISSET(conn, WT_CONN_RECOVERING))
+        } else if (!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
             txn_global->meta_ckpt_timestamp = txn_global->recovery_timestamp;
     } else {
-        if (!F_ISSET(conn, WT_CONN_RECOVERING))
+        if (!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
             txn_global->meta_ckpt_timestamp = WT_TS_NONE;
         txn_shared->read_timestamp = WT_TS_NONE;
     }
@@ -1241,7 +1241,7 @@ __txn_checkpoint(WT_SESSION_IMPL *session, const char *cfg[])
      * Update the connection base write generation based on the latest checkpoint write generations
      * to reset these transaction ids present on the pages when reading them.
      */
-    if (F_ISSET(conn, WT_CONN_RECOVERING))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
         WT_ERR(__wt_metadata_correct_base_write_gen(session));
 
     /*
@@ -1760,7 +1760,7 @@ __checkpoint_lock_dirty_tree_int(WT_SESSION_IMPL *session, bool is_checkpoint, b
          * In the event of a crash we may need to restart from the backup and all checkpoints that
          * were in the backup file must remain.
          */
-        if (F_ISSET(conn, WT_CONN_RECOVERING) && F_ISSET(conn, WT_CONN_WAS_BACKUP)) {
+        if (F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) && F_ISSET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP)) {
             F_CLR(ckpt, WT_CKPT_DELETE);
             continue;
         }
@@ -2386,7 +2386,7 @@ err:
 
     /* For a successful checkpoint, post process the ckptlist, to keep a cached copy around. */
     WT_STAT_CONN_SET(session, checkpoint_state, WT_CHECKPOINT_STATE_POSTPROCESS);
-    if (ret != 0 || WT_IS_METADATA(session->dhandle) || F_ISSET(conn, WT_CONN_CLOSING))
+    if (ret != 0 || WT_IS_METADATA(session->dhandle) || F_ISSET_ATOMIC_32(conn, WT_CONN_CLOSING))
         __wt_meta_saved_ckptlist_free(session);
     else {
         ret = __checkpoint_save_ckptlist(session, btree->ckpt);
@@ -2531,7 +2531,7 @@ __wt_checkpoint_sync(WT_SESSION_IMPL *session, const char *cfg[])
     WT_ASSERT(session, !WT_READING_CHECKPOINT(session));
 
     /* Unnecessary if checkpoint_sync has been configured "off". */
-    if (!F_ISSET(S2C(session), WT_CONN_CKPT_SYNC))
+    if (!F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CKPT_SYNC))
         return (0);
 
     WT_STAT_CONN_INCR(session, checkpoint_sync);

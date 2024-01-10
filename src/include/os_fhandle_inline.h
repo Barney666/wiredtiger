@@ -22,7 +22,7 @@ __wt_fsync(WT_SESSION_IMPL *session, WT_FH *fh, bool block)
     WT_DECL_RET;
     WT_FILE_HANDLE *handle;
 
-    WT_ASSERT(session, !F_ISSET(S2C(session), WT_CONN_READONLY));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY));
 
     __wt_verbose(session, WT_VERB_HANDLEOPS, "%s: handle-sync", fh->handle->name);
 
@@ -55,8 +55,8 @@ __wt_fextend(WT_SESSION_IMPL *session, WT_FH *fh, wt_off_t offset)
     wt_off_t cur_size;
 #endif
 
-    WT_ASSERT(session, !F_ISSET(S2C(session), WT_CONN_READONLY));
-    WT_ASSERT(session, !F_ISSET(S2C(session), WT_CONN_IN_MEMORY));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY));
 
     __wt_verbose(session, WT_VERB_HANDLEOPS, "%s: handle-extend: to %" PRIuMAX, fh->handle->name,
       (uintmax_t)offset);
@@ -117,7 +117,7 @@ __wt_read(WT_SESSION_IMPL *session, WT_FH *fh, wt_off_t offset, size_t len, void
 
     /* Flag any failed read: if we're in startup, it may be fatal. */
     if (ret != 0)
-        F_SET(S2C(session), WT_CONN_DATA_CORRUPTION);
+        F_SET_ATOMIC_32(S2C(session), WT_CONN_DATA_CORRUPTION);
 
     time_stop = __wt_clock(session);
     __wt_stat_msecs_hist_incr_fsread(session, WT_CLOCKDIFF_MS(time_stop, time_start));
@@ -149,7 +149,7 @@ __wt_ftruncate(WT_SESSION_IMPL *session, WT_FH *fh, wt_off_t offset)
     wt_off_t cur_size;
 #endif
 
-    WT_ASSERT(session, !F_ISSET(S2C(session), WT_CONN_READONLY));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY));
 
     __wt_verbose(session, WT_VERB_HANDLEOPS, "%s: handle-truncate: to %" PRIuMAX, fh->handle->name,
       (uintmax_t)offset);
@@ -182,7 +182,7 @@ __wt_write(WT_SESSION_IMPL *session, WT_FH *fh, wt_off_t offset, size_t len, con
     uint64_t time_start, time_stop;
 
     WT_ASSERT(session,
-      !F_ISSET(S2C(session), WT_CONN_READONLY) ||
+      !F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY) ||
         WT_STRING_MATCH(fh->name, WT_SINGLETHREAD, strlen(WT_SINGLETHREAD)));
 
     __wt_verbose_debug2(session, WT_VERB_HANDLEOPS,

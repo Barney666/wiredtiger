@@ -535,7 +535,7 @@ __wt_txn_checkpoint_log(WT_SESSION_IMPL *session, bool full, uint32_t flags, WT_
           rectype, ckpt_lsn->l.file, ckpt_lsn->l.offset, txn->ckpt_nsnapshot, ckpt_snapshot));
         logrec->size += (uint32_t)recsize;
         WT_ERR(__wt_log_write(
-          session, logrec, lsnp, F_ISSET(conn, WT_CONN_CKPT_SYNC) ? WT_LOG_FSYNC : 0));
+          session, logrec, lsnp, F_ISSET_ATOMIC_32(conn, WT_CONN_CKPT_SYNC) ? WT_LOG_FSYNC : 0));
 
         /*
          * If this full checkpoint completed successfully and there is no hot backup in progress and

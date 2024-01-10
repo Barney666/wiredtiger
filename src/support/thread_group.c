@@ -23,9 +23,9 @@ __thread_run(void *arg)
     session = thread->session;
 
     for (;;) {
-        if (!F_ISSET(thread, WT_THREAD_RUN))
+        if (!F_ISSET_ATOMIC_16(thread, WT_THREAD_RUN))
             break;
-        if (!F_ISSET(thread, WT_THREAD_ACTIVE))
+        if (!F_ISSET_ATOMIC_16(thread, WT_THREAD_ACTIVE))
             __wt_cond_wait(
               session, thread->pause_cond, WT_THREAD_PAUSE * WT_MILLION, thread->chk_func);
         WT_ERR(thread->run_func(session, thread));
@@ -38,7 +38,7 @@ err:
     if (thread->stop_func != NULL)
         ret = thread->stop_func(session, thread);
 
-    if (ret != 0 && F_ISSET(thread, WT_THREAD_PANIC_FAIL))
+    if (ret != 0 && F_ISSET_ATOMIC_16(thread, WT_THREAD_PANIC_FAIL))
         WT_IGNORE_RET(__wt_panic(session, ret, "Unrecoverable utility thread error"));
 
     /*
@@ -49,8 +49,8 @@ err:
      * 4.  When an error has occurred and the connection panic flag is set.
      */
     WT_ASSERT(session,
-      !F_ISSET(thread, WT_THREAD_RUN) ||
-        F_ISSET(S2C(session), WT_CONN_CLOSING | WT_CONN_PANIC | WT_CONN_RECOVERING));
+      !F_ISSET_ATOMIC_16(thread, WT_THREAD_RUN) ||
+        F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING | WT_CONN_PANIC | WT_CONN_RECOVERING));
 
     return (WT_THREAD_RET_VALUE);
 }
@@ -83,9 +83,9 @@ __thread_group_shrink(WT_SESSION_IMPL *session, WT_THREAD_GROUP *group, uint32_t
         WT_ASSERT(session, thread->tid.created);
         __wt_verbose(session, WT_VERB_THREAD_GROUP, "Stopping utility thread: %s:%" PRIu32,
           group->name, thread->id);
-        if (F_ISSET(thread, WT_THREAD_ACTIVE))
+        if (F_ISSET_ATOMIC_16(thread, WT_THREAD_ACTIVE))
             --group->current_threads;
-        F_CLR(thread, WT_THREAD_ACTIVE | WT_THREAD_RUN);
+        F_CLR_ATOMIC_16(thread, WT_THREAD_ACTIVE | WT_THREAD_RUN);
         /*
          * Signal the thread in case it is in a long timeout.
          */
@@ -184,7 +184,7 @@ __thread_group_resize(WT_SESSION_IMPL *session, WT_THREAD_GROUP *group, uint32_t
         WT_ERR(
           __wt_open_internal_session(conn, group->name, false, session_flags, 0, &thread->session));
         if (LF_ISSET(WT_THREAD_PANIC_FAIL))
-            F_SET(thread, WT_THREAD_PANIC_FAIL);
+            F_SET_ATOMIC_16(thread, WT_THREAD_PANIC_FAIL);
         thread->id = i;
         thread->tid.name_index = (uint16_t)i + 1;
         thread->chk_func = group->chk_func;
@@ -197,7 +197,7 @@ __thread_group_resize(WT_SESSION_IMPL *session, WT_THREAD_GROUP *group, uint32_t
          */
         __wt_verbose(session, WT_VERB_THREAD_GROUP, "Starting utility thread: %s:%" PRIu32,
           group->name, thread->id);
-        F_SET(thread, WT_THREAD_RUN);
+        F_SET_ATOMIC_16(thread, WT_THREAD_RUN);
         WT_ERR(__wt_thread_create(thread->session, &thread->tid, __thread_run, thread));
 
         WT_ASSERT(session, group->threads[i] == NULL);
@@ -350,8 +350,8 @@ __wt_thread_group_start_one(WT_SESSION_IMPL *session, WT_THREAD_GROUP *group, bo
         WT_ASSERT(session, thread != NULL);
         __wt_verbose(session, WT_VERB_THREAD_GROUP, "Activating utility thread: %s:%" PRIu32,
           group->name, thread->id);
-        WT_ASSERT(session, !F_ISSET(thread, WT_THREAD_ACTIVE));
-        F_SET(thread, WT_THREAD_ACTIVE);
+        WT_ASSERT(session, !F_ISSET_ATOMIC_16(thread, WT_THREAD_ACTIVE));
+        F_SET_ATOMIC_16(thread, WT_THREAD_ACTIVE);
         __wt_cond_signal(session, thread->pause_cond);
     }
     if (!is_locked)
@@ -376,8 +376,8 @@ __wt_thread_group_stop_one(WT_SESSION_IMPL *session, WT_THREAD_GROUP *group)
         thread = group->threads[--group->current_threads];
         __wt_verbose(session, WT_VERB_THREAD_GROUP, "Pausing utility thread: %s:%" PRIu32,
           group->name, thread->id);
-        WT_ASSERT(session, F_ISSET(thread, WT_THREAD_ACTIVE));
-        F_CLR(thread, WT_THREAD_ACTIVE);
+        WT_ASSERT(session, F_ISSET_ATOMIC_16(thread, WT_THREAD_ACTIVE));
+        F_CLR_ATOMIC_16(thread, WT_THREAD_ACTIVE);
         __wt_cond_signal(session, thread->pause_cond);
     }
     __wt_writeunlock(session, &group->lock);

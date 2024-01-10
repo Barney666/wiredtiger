@@ -63,7 +63,7 @@ __ckpt_server_config(WT_SESSION_IMPL *session, const char **cfg, bool *startp)
 static bool
 __ckpt_server_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_CHECKPOINT));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_CHECKPOINT));
 }
 
 /*
@@ -134,7 +134,7 @@ __ckpt_server_start(WT_CONNECTION_IMPL *conn)
     if (conn->ckpt_session != NULL)
         return (0);
 
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_CHECKPOINT);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CHECKPOINT);
 
     /*
      * The checkpoint server gets its own session.
@@ -201,7 +201,7 @@ __wt_checkpoint_server_destroy(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
 
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_CHECKPOINT);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_CHECKPOINT);
     if (conn->ckpt_tid_set) {
         __wt_cond_signal(session, conn->ckpt_cond);
         WT_TRET(__wt_thread_join(session, &conn->ckpt_tid));

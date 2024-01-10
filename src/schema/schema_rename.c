@@ -64,7 +64,7 @@ __rename_file(WT_SESSION_IMPL *session, const char *uri, const char *newuri)
 
     WT_ERR(__wt_metadata_remove(session, uri));
     filecfg[0] = oldvalue;
-    if (F_ISSET(S2C(session), WT_CONN_INCR_BACKUP)) {
+    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_INCR_BACKUP)) {
         WT_ERR(__wt_reset_blkmod(session, oldvalue, buf));
         filecfg[1] = buf->mem;
     } else

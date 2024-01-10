@@ -593,8 +593,8 @@ __wt_log_reset(WT_SESSION_IMPL *session, uint32_t lognum)
     if (!FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED) || log->fileid > lognum)
         return (0);
 
-    WT_ASSERT(session, F_ISSET(conn, WT_CONN_RECOVERING));
-    WT_ASSERT(session, !F_ISSET(conn, WT_CONN_READONLY));
+    WT_ASSERT(session, F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING));
+    WT_ASSERT(session, !F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY));
     /*
      * We know we're single threaded and called from recovery only when toggling logging back on.
      * Therefore the only log files we have are old and outdated and the new one created when
@@ -901,7 +901,7 @@ __log_open_verify(WT_SESSION_IMPL *session, uint32_t id, WT_FH **fhp, WT_LSN *ls
     log = conn->log;
     need_salvage = false;
     WT_RET(__wt_scr_alloc(session, 0, &buf));
-    salvage_mode = (need_salvagep != NULL && F_ISSET(conn, WT_CONN_SALVAGE));
+    salvage_mode = (need_salvagep != NULL && F_ISSET_ATOMIC_32(conn, WT_CONN_SALVAGE));
 
     if (log == NULL) {
         if (FLD_ISSET(conn->direct_io, WT_DIRECT_IO_LOG))
@@ -1285,7 +1285,7 @@ __log_set_version(
         FLD_CLR(conn->log_flags, WT_CONN_LOG_DOWNGRADED);
     if (live_chg)
         F_SET(log, WT_LOG_FORCE_NEWFILE);
-    if (!F_ISSET(conn, WT_CONN_READONLY))
+    if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
         return (__log_prealloc_remove(session));
 
     return (0);
@@ -1651,7 +1651,7 @@ __wt_log_open(WT_SESSION_IMPL *session)
           __wt_open(session, conn->log_path, WT_FS_OPEN_FILE_TYPE_DIRECTORY, 0, &log->log_dir_fh));
     }
 
-    if (!F_ISSET(conn, WT_CONN_READONLY))
+    if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
         WT_ERR(__log_prealloc_remove(session));
 
 again:
@@ -1700,7 +1700,7 @@ again:
      * Start logging at the beginning of the next log file, no matter where the previous log file
      * ends.
      */
-    if (!F_ISSET(conn, WT_CONN_READONLY)) {
+    if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY)) {
         WT_WITH_SLOT_LOCK(session, log, ret = __log_newfile(session, true, NULL));
         WT_ERR(ret);
     }
@@ -1754,20 +1754,20 @@ __wt_log_close(WT_SESSION_IMPL *session)
 
     if (log->log_close_fh != NULL && log->log_close_fh != log->log_fh) {
         __wt_verbose(session, WT_VERB_LOG, "closing old log %s", log->log_close_fh->name);
-        if (!F_ISSET(conn, WT_CONN_READONLY))
+        if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
             WT_RET(__wt_fsync(session, log->log_close_fh, true));
         WT_RET(__wt_close(session, &log->log_close_fh));
     }
     if (log->log_fh != NULL) {
         __wt_verbose(session, WT_VERB_LOG, "closing log %s", log->log_fh->name);
-        if (!F_ISSET(conn, WT_CONN_READONLY))
+        if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
             WT_RET(__wt_fsync(session, log->log_fh, true));
         WT_RET(__wt_close(session, &log->log_fh));
         log->log_fh = NULL;
     }
     if (log->log_dir_fh != NULL) {
         __wt_verbose(session, WT_VERB_LOG, "closing log directory %s", log->log_dir_fh->name);
-        if (!F_ISSET(conn, WT_CONN_READONLY))
+        if (!F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
             WT_RET(__wt_fsync(session, log->log_dir_fh, true));
         WT_RET(__wt_close(session, &log->log_dir_fh));
         log->log_dir_fh = NULL;
@@ -1849,7 +1849,7 @@ __log_has_hole(WT_SESSION_IMPL *session, WT_FH *fh, wt_off_t log_size, wt_off_t 
              * beginning zeroed, hence the part after a hole may in fact be the middle of the
              * record.
              */
-            if (!F_ISSET(conn, WT_CONN_WAS_BACKUP)) {
+            if (!F_ISSET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP)) {
                 logrec = (WT_LOG_RECORD *)p;
                 if (buf_left >= sizeof(WT_LOG_RECORD)) {
                     off += p - buf;
@@ -1937,7 +1937,7 @@ __wt_log_release(WT_SESSION_IMPL *session, WT_LOGSLOT *slot, bool *freep)
      * before it starts up.
      */
     if (!F_ISSET_ATOMIC_16(slot, WT_SLOT_FLUSH | WT_SLOT_SYNC_FLAGS) &&
-      FLD_ISSET(conn->server_flags, WT_CONN_SERVER_LOG)) {
+      FLD_ISSET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_LOG)) {
         if (freep != NULL)
             *freep = 0;
         slot->slot_state = WT_LOG_SLOT_WRITTEN;
@@ -2039,7 +2039,7 @@ __log_salvage_message(
     __wt_verbose_notice(session, WT_VERB_LOG,
       "log file %s corrupted%s at position %" PRIuMAX ", truncated", log_name, extra_msg,
       (uintmax_t)offset);
-    F_SET(S2C(session), WT_CONN_DATA_CORRUPTION);
+    F_SET_ATOMIC_32(S2C(session), WT_CONN_DATA_CORRUPTION);
     return (WT_ERROR);
 }
 
@@ -2252,7 +2252,7 @@ advance:
          * flag so that if the read fails, we know this is an situation we can salvage.
          */
         WT_ASSERT(session, buf->memsize >= allocsize);
-        need_salvage = F_ISSET(conn, WT_CONN_SALVAGE);
+        need_salvage = F_ISSET_ATOMIC_32(conn, WT_CONN_SALVAGE);
         WT_ERR(__log_fs_read(session, log_fh, rd_lsn.l.offset, (size_t)allocsize, buf->mem));
         need_salvage = false;
         /*
@@ -2337,7 +2337,7 @@ advance:
              * salvage in these situations, we merely truncate the
              * log at this point and issue a message.
              */
-            if (F_ISSET(conn, WT_CONN_WAS_BACKUP))
+            if (F_ISSET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP))
                 break;
 
             if (!__log_check_partial_write(session, buf, reclen)) {
@@ -2502,7 +2502,7 @@ __wt_log_write(WT_SESSION_IMPL *session, WT_ITEM *record, WT_LSN *lsnp, uint32_t
      * open log file. In that case, just return. We can also have logging opened for reading in a
      * read-only database and attempt to write a record on close.
      */
-    if (!F_ISSET(log, WT_LOG_OPENED) || F_ISSET(conn, WT_CONN_READONLY))
+    if (!F_ISSET(log, WT_LOG_OPENED) || F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
         return (0);
     ip = record;
     if ((compressor = conn->log_compressor) != NULL && record->size < log->allocsize) {

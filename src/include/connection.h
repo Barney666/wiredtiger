@@ -239,7 +239,7 @@ struct __wt_name_flag {
  * WT_CONN_CHECK_PANIC --
  *	Check if we've panicked and return the appropriate error.
  */
-#define WT_CONN_CHECK_PANIC(conn) (F_ISSET(conn, WT_CONN_PANIC) ? WT_PANIC : 0)
+#define WT_CONN_CHECK_PANIC(conn) (F_ISSET_ATOMIC_32(conn, WT_CONN_PANIC) ? WT_PANIC : 0)
 #define WT_SESSION_CHECK_PANIC(session) WT_CONN_CHECK_PANIC(S2C(session))
 
 /*
@@ -295,7 +295,7 @@ struct __wt_name_flag {
  */
 #define WT_CONN_SET_INCR_BACKUP(conn)                        \
     do {                                                     \
-        F_SET((conn), WT_CONN_INCR_BACKUP);                  \
+        F_SET_ATOMIC_32((conn), WT_CONN_INCR_BACKUP);                  \
         FLD_SET((conn)->log_flags, WT_CONN_LOG_INCR_BACKUP); \
     } while (0)
 
@@ -556,7 +556,7 @@ struct __wt_connection_impl {
 
     WT_KEYED_ENCRYPTOR *kencryptor; /* Encryptor for metadata and log */
 
-    bool evict_server_running; /* Eviction server operating */
+    wt_shared bool evict_server_running; /* Eviction server operating */
 
     WT_THREAD_GROUP evict_threads;
     uint32_t evict_threads_max; /* Max eviction threads */
@@ -810,8 +810,10 @@ struct __wt_connection_impl {
 #define WT_CONN_SERVER_STATISTICS 0x040u
 #define WT_CONN_SERVER_SWEEP 0x080u
 #define WT_CONN_SERVER_TIERED 0x100u
-    /* AUTOMATIC FLAG VALUE GENERATION STOP 32 */
-    uint32_t server_flags;
+    /* AUTOMATIC FLAG VALUE GENERATION STOP 16 */
+    // FIXME - This was originally called server_flags. We should create a generic F_*_ATOMIC macro
+    // rather than rename to flags_atomic
+    wt_shared uint16_t server_flags;
 
 /* AUTOMATIC FLAG VALUE GENERATION START 0 */
 #define WT_CONN_BACKUP_PARTIAL_RESTORE 0x00000001u
@@ -845,7 +847,7 @@ struct __wt_connection_impl {
 #define WT_CONN_TIERED_FIRST_FLUSH 0x10000000u
 #define WT_CONN_WAS_BACKUP 0x20000000u
     /* AUTOMATIC FLAG VALUE GENERATION STOP 32 */
-    wt_shared uint32_t flags;
+    wt_shared uint32_t flags_atomic_32;
 };
 
 /*

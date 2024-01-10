@@ -31,7 +31,7 @@ __wt_verbose_dump_backup(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
     WT_RET(__wt_msg(session, "%s", WT_DIVIDER));
-    if (!F_ISSET(conn, WT_CONN_INCR_BACKUP)) {
+    if (!F_ISSET_ATOMIC_32(conn, WT_CONN_INCR_BACKUP)) {
         WT_RET(__wt_msg(session, "No incremental backup information exists"));
         return (0);
     }
@@ -96,7 +96,7 @@ __wt_backup_destroy(WT_SESSION_IMPL *session)
         F_CLR(blkincr, WT_BLKINCR_VALID);
     }
     conn->incr_granularity = 0;
-    F_CLR(conn, WT_CONN_INCR_BACKUP);
+    F_CLR_ATOMIC_32(conn, WT_CONN_INCR_BACKUP);
 }
 
 /*
@@ -123,7 +123,7 @@ __wt_backup_open(WT_SESSION_IMPL *session)
     /*
      * Walk each item in the metadata and set up our last known global incremental information.
      */
-    F_CLR(conn, WT_CONN_INCR_BACKUP);
+    F_CLR_ATOMIC_32(conn, WT_CONN_INCR_BACKUP);
     i = 0;
     while (__wt_config_next(&blkconf, &k, &v) == 0) {
         WT_ASSERT(session, i < WT_BLKINCR_MAX);
@@ -352,7 +352,7 @@ __wt_curbackup_open(WT_SESSION_IMPL *session, const char *uri, WT_CURSOR *other,
     if (WT_STRING_MATCH("backup:query_id", uri, strlen(uri))) {
         /* Top level cursor code does not allow a URI and cursor. We don't need to check here. */
         WT_ASSERT(session, othercb == NULL);
-        if (!F_ISSET(S2C(session), WT_CONN_INCR_BACKUP))
+        if (!F_ISSET_ATOMIC_32(S2C(session), WT_CONN_INCR_BACKUP))
             WT_RET_MSG(session, EINVAL, "Incremental backup is not configured");
         F_SET(cb, WT_CURBACKUP_QUERYID);
     } else if (WT_STRING_MATCH("backup:export", uri, strlen(uri)))
@@ -546,7 +546,7 @@ __backup_config(WT_SESSION_IMPL *session, WT_CURSOR_BACKUP *cb, const char *cfg[
     WT_RET_NOTFOUND_OK(__wt_config_gets(session, cfg, "incremental.enabled", &cval));
     if (cval.val) {
         /* Granularity can only be set once at the beginning */
-        if (!F_ISSET(conn, WT_CONN_INCR_BACKUP)) {
+        if (!F_ISSET_ATOMIC_32(conn, WT_CONN_INCR_BACKUP)) {
             WT_RET(__wt_config_gets(session, cfg, "incremental.granularity", &cval));
             if (conn->incr_granularity != 0)
                 WT_RET_MSG(session, EINVAL, "Cannot change the incremental backup granularity");

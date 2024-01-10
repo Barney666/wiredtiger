@@ -52,7 +52,7 @@ __wt_log_op(WT_SESSION_IMPL *session)
         return (false);
 
     /* No logging during recovery. */
-    if (F_ISSET(conn, WT_CONN_RECOVERING))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING))
         return (false);
 
     return (true);

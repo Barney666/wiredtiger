@@ -141,7 +141,7 @@ __wt_rts_btree_apply_all(WT_SESSION_IMPL *session, wt_timestamp_t rollback_times
          * Ignore rollback to stable failures on files that don't exist or files where corruption is
          * detected.
          */
-        if (ret == ENOENT || (ret == WT_ERROR && F_ISSET(S2C(session), WT_CONN_DATA_CORRUPTION))) {
+        if (ret == ENOENT || (ret == WT_ERROR && F_ISSET_ATOMIC_32(S2C(session), WT_CONN_DATA_CORRUPTION))) {
             __wt_verbose_multi(session, WT_VERB_RECOVERY_RTS(session),
               WT_RTS_VERB_TAG_SKIP_DAMAGE
               "%s: skipped performing rollback to stable because the file %s",
@@ -161,7 +161,7 @@ __wt_rts_btree_apply_all(WT_SESSION_IMPL *session, wt_timestamp_t rollback_times
      * Do not perform the final pass on the history store in an in-memory configuration as it
      * doesn't exist.
      */
-    if (!F_ISSET(S2C(session), WT_CONN_IN_MEMORY)) {
+    if (!F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY)) {
         __wt_verbose_level_multi(session, WT_VERB_RECOVERY_RTS(session), WT_VERBOSE_DEBUG_3,
           WT_RTS_VERB_TAG_HS_TREE_FINAL_PASS
           "performing final pass of the history store to remove unstable entries with "

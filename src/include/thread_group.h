@@ -27,7 +27,7 @@ struct __wt_thread {
 #define WT_THREAD_PANIC_FAIL 0x4u /* Panic if the thread fails */
 #define WT_THREAD_RUN 0x8u        /* Thread is running */
                                   /* AUTOMATIC FLAG VALUE GENERATION STOP 32 */
-    uint32_t flags;
+    wt_shared uint16_t flags_atomic;
 
     /*
      * Condition signalled when a thread becomes active. Paused threads wait on this condition.

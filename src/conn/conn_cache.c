@@ -179,7 +179,7 @@ __wt_cache_config(WT_SESSION_IMPL *session, const char *cfg[], bool reconfig)
 
     WT_RET(__wt_config_gets_none(session, cfg, "shared_cache.name", &cval));
     now_shared = cval.len != 0;
-    was_shared = F_ISSET(conn, WT_CONN_CACHE_POOL);
+    was_shared = F_ISSET_ATOMIC_32(conn, WT_CONN_CACHE_POOL);
 
     /* Cleanup if reconfiguring */
     if (reconfig && was_shared && !now_shared)
@@ -198,7 +198,7 @@ __wt_cache_config(WT_SESSION_IMPL *session, const char *cfg[], bool reconfig)
     WT_RET(__cache_config_local(session, now_shared, cfg));
     if (now_shared) {
         WT_RET(__wt_cache_pool_config(session, cfg));
-        WT_ASSERT(session, F_ISSET(conn, WT_CONN_CACHE_POOL));
+        WT_ASSERT(session, F_ISSET_ATOMIC_32(conn, WT_CONN_CACHE_POOL));
         if (!was_shared)
             WT_RET(__wt_conn_cache_pool_open(session));
     }
@@ -342,7 +342,7 @@ __wt_cache_stats_update(WT_SESSION_IMPL *session)
      * The number of files with active walks ~= number of hazard pointers in the walk session. Note:
      * reading without locking.
      */
-    if (conn->evict_server_running)
+    if (__wt_atomic_loadb(&conn->evict_server_running))
         WT_STAT_SET(
           session, stats, cache_eviction_walks_active, cache->walk_session->hazards.num_active);
 

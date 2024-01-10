@@ -157,7 +157,7 @@ __sync_page_skip(
     }
 
     /* Don't read pages into cache during startup or shutdown phase. */
-    if (F_ISSET(S2C(session), WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT)) {
+    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT)) {
         *skipp = true;
         return (0);
     }
@@ -187,7 +187,7 @@ __sync_page_skip(
 
     if (addr.type == WT_ADDR_LEAF_NO ||
       (addr.ta.newest_stop_durable_ts == WT_TS_NONE &&
-        (F_ISSET(S2C(session), WT_CONN_CKPT_CLEANUP_SKIP_INT) ||
+        (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CKPT_CLEANUP_SKIP_INT) ||
           !F_ISSET(S2BT(session), WT_BTREE_LOGGED)))) {
         __wt_verbose_debug2(
           session, WT_VERB_CHECKPOINT_CLEANUP, "%p: page walk skipped", (void *)ref);
@@ -336,7 +336,7 @@ __wt_sync_file(WT_SESSION_IMPL *session, WT_CACHE_OP syncop)
          * the internal pages to improve cleanup.)
          */
         if (btree->type == BTREE_ROW || btree->type == BTREE_COL_VAR)
-            internal_cleanup = !F_ISSET(conn, WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT);
+            internal_cleanup = !F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT);
         else {
             LF_SET(WT_READ_CACHE);
             internal_cleanup = false;
@@ -507,7 +507,7 @@ err:
      * Leaves are written before a checkpoint (or as part of a file close, before checkpointing the
      * file). Start a flush to stable storage, but don't wait for it.
      */
-    if (ret == 0 && syncop == WT_SYNC_WRITE_LEAVES && F_ISSET(conn, WT_CONN_CKPT_SYNC))
+    if (ret == 0 && syncop == WT_SYNC_WRITE_LEAVES && F_ISSET_ATOMIC_32(conn, WT_CONN_CKPT_SYNC))
         WT_RET(btree->bm->sync(btree->bm, session, false));
 
     return (ret);

@@ -18,7 +18,7 @@
 static bool
 __background_compact_server_run_chk(WT_SESSION_IMPL *session)
 {
-    return (FLD_ISSET(S2C(session)->server_flags, WT_CONN_SERVER_COMPACT));
+    return (FLD_ISSET_ATOMIC_16(S2C(session)->server_flags, WT_CONN_SERVER_COMPACT));
 }
 
 /*
@@ -647,11 +647,11 @@ __wt_background_compact_server_create(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
 
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY))
         return (0);
 
     /* Set first, the thread might run before we finish up. */
-    FLD_SET(conn->server_flags, WT_CONN_SERVER_COMPACT);
+    FLD_SET_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_COMPACT);
 
     WT_RET(__wt_calloc_def(session, conn->hash_size, &conn->background_compact.stat_hash));
     WT_RET(__wt_calloc_def(session, conn->hash_size, &conn->background_compact.exclude_list_hash));
@@ -690,7 +690,7 @@ __wt_background_compact_server_destroy(WT_SESSION_IMPL *session)
 
     conn = S2C(session);
 
-    FLD_CLR(conn->server_flags, WT_CONN_SERVER_COMPACT);
+    FLD_CLR_ATOMIC_16(conn->server_flags, WT_CONN_SERVER_COMPACT);
     if (conn->background_compact.tid_set) {
         conn->background_compact.running = false;
         __wt_cond_signal(session, conn->background_compact.cond);
@@ -729,7 +729,7 @@ __wt_background_compact_signal(WT_SESSION_IMPL *session, const char *config)
     stripped_config = NULL;
 
     /* The background compaction server is not compatible with in-memory or readonly databases. */
-    if (F_ISSET(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY)) {
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY)) {
         __wt_verbose_warning(session, WT_VERB_COMPACT, "%s",
           "Background compact cannot be configured for in-memory or readonly databases.");
         return (ENOTSUP);

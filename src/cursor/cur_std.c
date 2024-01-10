@@ -1444,7 +1444,7 @@ __wt_cursor_init(
      * checkpoint, readonly Checkpoint cursors are permanently read-only, avoid the extra work of
      * two configuration string checks.
      */
-    readonly = F_ISSET(S2C(session), WT_CONN_READONLY);
+    readonly = F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY);
     if (!readonly) {
         WT_RET(__wt_config_gets_def(session, cfg, "checkpoint", 0, &cval));
         readonly = cval.len != 0;
