@@ -145,9 +145,9 @@ __wt_atomic_cas_ptr(void *vp, void *old, void *newv)
     {                                                            \
         return (__atomic_load_n(vp, __ATOMIC_SEQ_CST));          \
     }                                                            \
-    static inline void __wt_atomic_store##name(vp_arg, v_arg)     \
+    static inline void __wt_atomic_store##name(vp_arg, v_arg)    \
     {                                                            \
-        __atomic_store_n(vp, v, __ATOMIC_SEQ_CST);      \
+        __atomic_store_n(vp, v, __ATOMIC_SEQ_CST);               \
     }
 WT_ATOMIC_FUNC(b, bool, bool *vp, bool v)
 WT_ATOMIC_FUNC(8, uint8_t, uint8_t *vp, uint8_t v)

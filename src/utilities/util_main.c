@@ -325,6 +325,7 @@ open:
     secretkey = p = NULL;
 
     /* If we only want to verify the metadata, that is done in wiredtiger_open. We're done. */
+    // TO CHECK - could move into own func?
     if (func == NULL && meta_verify)
         goto done;
 

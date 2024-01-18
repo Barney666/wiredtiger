@@ -635,7 +635,7 @@ __wt_block_off_free(
     WT_DECL_RET;
 
     /* The live lock must be locked, except for when we are running salvage. */
-    if (!F_ISSET(S2BT(session), WT_BTREE_SALVAGE))
+    if (!F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_SALVAGE))
         WT_ASSERT_SPINLOCK_OWNED(session, &block->live_lock);
 
     /* If a sync is running, no other sessions can free blocks. */

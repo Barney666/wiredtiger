@@ -99,7 +99,7 @@ __wt_stats_aggregate(void *stats_arg, int slot)
 
     stats = (int64_t **)stats_arg;
     for (aggr_v = 0, i = 0; i < WT_COUNTER_SLOTS; i++)
-        aggr_v += stats[i][slot];
+        aggr_v += __wt_atomic_loadi64(&stats[i][slot]);
 
     /*
      * This can race. However, any implementation with a single value can race as well, different
@@ -130,7 +130,7 @@ __wt_stats_clear(void *stats_arg, int slot)
 
     stats = (int64_t **)stats_arg;
     for (i = 0; i < WT_COUNTER_SLOTS; i++)
-        stats[i][slot] = 0;
+        __wt_atomic_storei64(&stats[i][slot], 0);
 }
 
 /*
@@ -138,7 +138,7 @@ __wt_stats_clear(void *stats_arg, int slot)
  * different actions: reading sums the values across the array of structures, writing updates a
  * single structure's value.
  */
-#define WT_STAT_ENABLED(session) (S2C(session)->stat_flags != 0)
+#define WT_STAT_ENABLED(session) (__wt_atomic_load32(&S2C(session)->stat_flags) != 0)
 
 #define WT_STAT_READ(stats, fld) __wt_stats_aggregate(stats, WT_STATS_FIELD_TO_OFFSET(stats, fld))
 #define WT_STAT_WRITE(session, stats, fld, v) \
@@ -160,7 +160,8 @@ __wt_stats_clear(void *stats_arg, int slot)
 #define WT_STAT_INCRV_BASE(session, stat, fld, value) \
     do {                                              \
         if (WT_STAT_ENABLED(session))                 \
-            (stat)->fld += (int64_t)(value);          \
+        /* // HERE - Need to check if stats must become atomic */ \
+            __wt_atomic_addi64(&(stat)->fld, (int64_t)(value));          \
     } while (0)
 #define WT_STAT_INCRV_ATOMIC_BASE(session, stat, fld, value)          \
     do {                                                              \
@@ -190,7 +191,7 @@ __wt_stats_clear(void *stats_arg, int slot)
 #define WT_STAT_SET_BASE(session, stat, fld, value) \
     do {                                            \
         if (WT_STAT_ENABLED(session))               \
-            (stat)->fld = (int64_t)(value);         \
+            __wt_atomic_storei64(&(stat)->fld, (int64_t)(value));         \
     } while (0)
 #define WT_STAT_SET(session, stats, fld, value)                            \
     do {                                                                   \

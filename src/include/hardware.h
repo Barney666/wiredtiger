@@ -94,7 +94,6 @@
 #define F_CLR_ATOMIC_16(p, mask) FLD_CLR_ATOMIC_16((p)->flags_atomic, mask)
 #define F_SET_ATOMIC_16(p, mask) FLD_SET_ATOMIC_16((p)->flags_atomic, mask)
 
-
 #define FLD_ISSET_ATOMIC_32(field, mask) (__wt_atomic_load32(&field) & (uint32_t)(mask))
 
 #define FLD_SET_ATOMIC_32(field, mask)                                             \
@@ -116,8 +115,6 @@
             __orig = (field);                                                         \
         } while (!__wt_atomic_cas32(&(field), __orig, __orig & (uint32_t)(~(mask)))); \
     } while (0)
-
-
 
 // FIXME - generalise atomic macros?
 #define F_ISSET_ATOMIC_32(p, mask) FLD_ISSET_ATOMIC_32((p)->flags_atomic_32, mask)

@@ -130,10 +130,10 @@ __wt_try_readlock(WT_SESSION_IMPL *session, WT_RWLOCK *l)
     WT_STAT_CONN_INCR(session, rwlock_read);
     if (l->stat_read_count_off != -1 && WT_STAT_ENABLED(session)) {
         stats = (int64_t **)S2C(session)->stats;
-        stats[session->stat_bucket][l->stat_read_count_off]++;
+        __wt_atomic_addi64(&stats[session->stat_bucket][l->stat_read_count_off], 1);
     }
 
-    old.u.v = l->u.v;
+    __wt_atomic_storev64(&old.u.v, __wt_atomic_loadv64(&l->u.v));
 
     /* This read lock can only be granted if there are no active writers. */
     if (old.u.s.current != old.u.s.next)

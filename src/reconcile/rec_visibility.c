@@ -105,8 +105,9 @@ __rec_append_orig_value(
          * its transaction id to WT_TXN_NONE and its timestamps to WT_TS_NONE when we write the
          * update to the time window.
          */
-        if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY) && unpack->tw.start_ts == upd->start_ts &&
-          unpack->tw.start_txn == upd->txnid && upd->type != WT_UPDATE_TOMBSTONE)
+        if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY) &&
+          unpack->tw.start_ts == upd->start_ts && unpack->tw.start_txn == upd->txnid &&
+          upd->type != WT_UPDATE_TOMBSTONE)
             return (0);
 
         /*
@@ -300,8 +301,8 @@ __rec_need_save_upd(WT_SESSION_IMPL *session, WT_RECONCILE *r, WT_UPDATE_SELECT 
      * 2. On-disk entry exists.
      * 3. Valid updates exist in the update chain to be written to the history store.
      */
-    supd_restore =
-      F_ISSET(r, WT_REC_EVICT) && (has_newer_updates || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY));
+    supd_restore = F_ISSET(r, WT_REC_EVICT) &&
+      (has_newer_updates || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_IN_MEMORY));
 
     if (!supd_restore && vpack == NULL && upd_select->upd != NULL) {
         upd = upd_select->upd;

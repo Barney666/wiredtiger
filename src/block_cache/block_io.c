@@ -34,7 +34,8 @@ __blkcache_read_corrupt(WT_SESSION_IMPL *session, int error, const uint8_t *addr
     WT_ASSERT(session, ret != 0);
 
     F_SET_ATOMIC_32(S2C(session), WT_CONN_DATA_CORRUPTION);
-    if (!F_ISSET(btree, WT_BTREE_VERIFY) && !F_ISSET(session, WT_SESSION_QUIET_CORRUPT_FILE)) {
+    if (!F_ISSET_ATOMIC_32(btree, WT_BTREE_VERIFY) &&
+      !F_ISSET(session, WT_SESSION_QUIET_CORRUPT_FILE)) {
         WT_TRET(bm->corrupt(bm, session, addr, addr_size));
         WT_RET_PANIC(session, ret, "%s: fatal read error: %s", btree->dhandle->name, fail_msg);
     }
@@ -210,7 +211,7 @@ __wt_blkcache_read(WT_SESSION_IMPL *session, WT_ITEM *buf, const uint8_t *addr, 
 
 verify:
     /* If the handle is a verify handle, verify the physical page. */
-    if (F_ISSET(btree, WT_BTREE_VERIFY)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_VERIFY)) {
         if (tmp == NULL)
             WT_ERR(__wt_scr_alloc(session, 4 * 1024, &tmp));
         WT_ERR(bm->addr_string(bm, session, tmp, addr, addr_size));

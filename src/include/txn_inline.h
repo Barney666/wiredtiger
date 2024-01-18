@@ -391,7 +391,7 @@ __txn_should_assign_timestamp(WT_SESSION_IMPL *session, WT_TXN_OP *op)
 {
     if (!F_ISSET(session->txn, WT_TXN_HAS_TS_COMMIT))
         return (false);
-    if (F_ISSET(op->btree, WT_BTREE_LOGGED))
+    if (F_ISSET_ATOMIC_32(op->btree, WT_BTREE_LOGGED))
         return (false);
 
     return (true);
@@ -539,7 +539,7 @@ __wt_txn_oldest_id(WT_SESSION_IMPL *session)
      * The metadata is tracked specially because of optimizations for checkpoints.
      */
     if (session->dhandle != NULL && WT_IS_METADATA(session->dhandle))
-        return (txn_global->metadata_pinned);
+        return (__wt_atomic_loadv64(&txn_global->metadata_pinned));
 
     /*
      * Take a local copy of these IDs in case they are updated while we are checking visibility. The
@@ -551,7 +551,7 @@ __wt_txn_oldest_id(WT_SESSION_IMPL *session)
     WT_ORDERED_READ(oldest_id, txn_global->oldest_id);
 
     if (!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) || session->dhandle == NULL ||
-      F_ISSET(S2BT(session), WT_BTREE_LOGGED)) {
+      F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_LOGGED)) {
         /*
          * Checkpoint transactions often fall behind ordinary application threads. If there is an
          * active checkpoint, keep changes until checkpoint is finished.
@@ -1294,7 +1294,8 @@ retry:
     }
 
     /* If there's no visible update in the update chain or ondisk, check the history store file. */
-    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_HS_OPEN) && !F_ISSET(session->dhandle, WT_DHANDLE_HS)) {
+    if (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_HS_OPEN) &&
+      !F_ISSET(session->dhandle, WT_DHANDLE_HS)) {
         __wt_timing_stress(session, WT_TIMING_STRESS_HS_SEARCH);
         WT_RET(__wt_hs_find_upd(session, S2BT(session)->id, key, cbt->iface.value_format, recno,
           cbt->upd_value, &cbt->upd_value->buf));
@@ -1532,7 +1533,7 @@ __wt_txn_search_check(WT_SESSION_IMPL *session)
     name = session->dhandle->name;
 
     /* Timestamps are ignored on logged files. */
-    if (F_ISSET(S2BT(session), WT_BTREE_LOGGED))
+    if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_LOGGED))
         return (0);
 
     /* Skip checks during recovery. */
@@ -1769,10 +1770,11 @@ __wt_txn_cursor_op(WT_SESSION_IMPL *session)
      * positioned on a value, it can't be freed.
      */
     if (txn->isolation == WT_ISO_READ_UNCOMMITTED) {
-        if (txn_shared->pinned_id == WT_TXN_NONE)
-            txn_shared->pinned_id = txn_global->last_running;
-        if (txn_shared->metadata_pinned == WT_TXN_NONE)
-            txn_shared->metadata_pinned = txn_shared->pinned_id;
+        if (__wt_atomic_loadv64(&txn_shared->pinned_id) == WT_TXN_NONE)
+            __wt_atomic_storev64(
+              &txn_shared->pinned_id, __wt_atomic_loadv64(&txn_global->last_running));
+        if (__wt_atomic_loadv64(&txn_shared->metadata_pinned) == WT_TXN_NONE)
+            __wt_atomic_storev64(&txn_shared->metadata_pinned, txn_shared->pinned_id);
     } else if (!F_ISSET(txn, WT_TXN_HAS_SNAPSHOT))
         __wt_txn_get_snapshot(session);
 }

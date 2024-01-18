@@ -429,7 +429,7 @@ __wt_checkpoint_get_handles(WT_SESSION_IMPL *session, const char *cfg[])
      * Skip files that are never involved in a checkpoint. Skip the history store file as it is,
      * checkpointed manually later.
      */
-    if (F_ISSET(btree, WT_BTREE_NO_CHECKPOINT) || WT_IS_HS(btree->dhandle))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_NO_CHECKPOINT) || WT_IS_HS(btree->dhandle))
         return (0);
 
     /*
@@ -468,7 +468,7 @@ __wt_checkpoint_get_handles(WT_SESSION_IMPL *session, const char *cfg[])
      */
     WT_SAVE_DHANDLE(session, ret = __checkpoint_lock_dirty_tree(session, true, force, true, cfg));
     WT_RET(ret);
-    if (F_ISSET(btree, WT_BTREE_SKIP_CKPT)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT)) {
         __checkpoint_update_generation(session);
         return (0);
     }
@@ -1431,7 +1431,7 @@ err:
      */
     if (full && logging) {
         WT_STAT_CONN_SET(session, checkpoint_state, WT_CHECKPOINT_STATE_LOG);
-        if (ret == 0 && F_ISSET(CUR2BT(session->meta_cursor), WT_BTREE_SKIP_CKPT))
+        if (ret == 0 && F_ISSET_ATOMIC_32(CUR2BT(session->meta_cursor), WT_BTREE_SKIP_CKPT))
             idle = true;
         WT_TRET(__wt_txn_checkpoint_log(session, full,
           (ret == 0 && !idle) ? WT_TXN_LOG_CKPT_STOP : WT_TXN_LOG_CKPT_CLEANUP, NULL));
@@ -1760,7 +1760,8 @@ __checkpoint_lock_dirty_tree_int(WT_SESSION_IMPL *session, bool is_checkpoint, b
          * In the event of a crash we may need to restart from the backup and all checkpoints that
          * were in the backup file must remain.
          */
-        if (F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) && F_ISSET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP)) {
+        if (F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) &&
+          F_ISSET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP)) {
             F_CLR(ckpt, WT_CKPT_DELETE);
             continue;
         }
@@ -1794,7 +1795,7 @@ __checkpoint_lock_dirty_tree_int(WT_SESSION_IMPL *session, bool is_checkpoint, b
      * checkpoint.
      */
     WT_RET(__checkpoint_mark_skip(session, ckptbase, force));
-    if (F_ISSET(btree, WT_BTREE_SKIP_CKPT)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT)) {
         /*
          * If we decide to skip checkpointing, clear the delete flag on the checkpoints. The list of
          * checkpoints will be cached for a future access. Which checkpoints need to be deleted can
@@ -1840,7 +1841,7 @@ __checkpoint_lock_dirty_tree_int(WT_SESSION_IMPL *session, bool is_checkpoint, b
      * operations have exclusive access to the handles. Named checkpoints will fail in that case,
      * ordinary checkpoints skip files that cannot be opened normally.
      */
-    WT_ASSERT(session, !is_checkpoint || !F_ISSET(btree, WT_BTREE_SPECIAL_FLAGS));
+    WT_ASSERT(session, !is_checkpoint || !F_ISSET_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS));
 
     return (0);
 }
@@ -1931,8 +1932,8 @@ __checkpoint_lock_dirty_tree(
         }
 
         /* Skip the clean btree until the btree has obsolete pages. */
-        if (skip_ckpt && !F_ISSET(btree, WT_BTREE_OBSOLETE_PAGES)) {
-            F_SET(btree, WT_BTREE_SKIP_CKPT);
+        if (skip_ckpt && !F_ISSET_ATOMIC_32(btree, WT_BTREE_OBSOLETE_PAGES)) {
+            F_SET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT);
             goto skip;
         }
     }
@@ -1948,7 +1949,7 @@ __checkpoint_lock_dirty_tree(
 
     /* If we have to process this btree for any reason, reset the timer and obsolete pages flag. */
     WT_BTREE_CLEAN_CKPT(session, btree, 0);
-    F_CLR(btree, WT_BTREE_OBSOLETE_PAGES);
+    F_CLR_ATOMIC_32(btree, WT_BTREE_OBSOLETE_PAGES);
 
     WT_ERR(__wt_meta_ckptlist_get(session, dhandle->name, true, &ckptbase, &ckpt_bytes_allocated));
 
@@ -2013,7 +2014,7 @@ __checkpoint_lock_dirty_tree(
      * If we decided to skip checkpointing, we need to remove the new checkpoint entry we might have
      * appended to the list.
      */
-    if (F_ISSET(btree, WT_BTREE_SKIP_CKPT)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT)) {
         WT_CKPT_FOREACH_NAME_OR_ORDER (ckptbase, ckpt) {
             /* Checkpoint(s) to be added are always at the end of the list. */
             WT_ASSERT(session, !seen_ckpt_add || F_ISSET(ckpt, WT_CKPT_ADD));
@@ -2058,7 +2059,7 @@ __checkpoint_apply_obsolete(WT_SESSION_IMPL *session, WT_BTREE *btree, WT_CKPT *
          * the checkpoints.
          */
         if (ckpt->ta.newest_stop_ts != WT_TS_MAX) {
-            F_SET(btree, WT_BTREE_OBSOLETE_PAGES);
+            F_SET_ATOMIC_32(btree, WT_BTREE_OBSOLETE_PAGES);
             stop_ts = ckpt->ta.newest_stop_durable_ts;
         }
         if (__wt_txn_visible_all(session, ckpt->ta.newest_stop_txn, stop_ts)) {
@@ -2105,7 +2106,7 @@ __checkpoint_mark_skip(WT_SESSION_IMPL *session, WT_CKPT *ckptbase, bool force)
      * Checkpoint read-only objects otherwise: the application must be able to open the checkpoint
      * in a cursor after taking any checkpoint, which means it must exist.
      */
-    F_CLR(btree, WT_BTREE_SKIP_CKPT);
+    F_CLR_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT);
     if (!btree->modified && !force) {
         deleted = 0;
         WT_CKPT_FOREACH (ckptbase, ckpt) {
@@ -2131,7 +2132,7 @@ __checkpoint_mark_skip(WT_SESSION_IMPL *session, WT_CKPT *ckptbase, bool force)
           (strcmp(name, (ckpt - 2)->name) == 0 ||
             (WT_PREFIX_MATCH(name, WT_CHECKPOINT) &&
               WT_PREFIX_MATCH((ckpt - 2)->name, WT_CHECKPOINT)))) {
-            F_SET(btree, WT_BTREE_SKIP_CKPT);
+            F_SET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT);
             /*
              * If there are potentially extra checkpoints to delete, we set the timer to recheck
              * later. If there are at most two checkpoints, the current one and possibly a previous
@@ -2443,7 +2444,7 @@ __checkpoint_tree_helper(WT_SESSION_IMPL *session, const char *cfg[])
     with_timestamp = F_ISSET(txn, WT_TXN_SHARED_TS_READ);
 
     /* Logged tables ignore any read timestamp configured for the checkpoint. */
-    if (F_ISSET(btree, WT_BTREE_LOGGED))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_LOGGED))
         F_CLR(txn, WT_TXN_SHARED_TS_READ);
 
     ret = __checkpoint_tree(session, true, cfg);
@@ -2501,7 +2502,7 @@ __wt_checkpoint(WT_SESSION_IMPL *session, const char *cfg[])
     WT_RET(__wt_config_gets_def(session, cfg, "force", 0, &cval));
     force = cval.val != 0;
     WT_SAVE_DHANDLE(session, ret = __checkpoint_lock_dirty_tree(session, true, force, true, cfg));
-    if (ret != 0 || F_ISSET(S2BT(session), WT_BTREE_SKIP_CKPT))
+    if (ret != 0 || F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_SKIP_CKPT))
         goto done;
     ret = __checkpoint_tree(session, true, cfg);
 
@@ -2552,7 +2553,7 @@ __wt_checkpoint_close(WT_SESSION_IMPL *session, bool final)
     WT_ASSERT_SPINLOCK_OWNED(session, &session->dhandle->close_lock);
 
     btree = S2BT(session);
-    bulk = F_ISSET(btree, WT_BTREE_BULK);
+    bulk = F_ISSET_ATOMIC_32(btree, WT_BTREE_BULK);
     metadata = WT_IS_METADATA(session->dhandle);
 
     /*
@@ -2599,7 +2600,7 @@ __wt_checkpoint_close(WT_SESSION_IMPL *session, bool final)
     WT_SAVE_DHANDLE(
       session, ret = __checkpoint_lock_dirty_tree(session, false, false, need_tracking, NULL));
     WT_ASSERT(session, ret == 0);
-    if (ret == 0 && !F_ISSET(btree, WT_BTREE_SKIP_CKPT))
+    if (ret == 0 && !F_ISSET_ATOMIC_32(btree, WT_BTREE_SKIP_CKPT))
         ret = __checkpoint_tree(session, false, NULL);
 
     __txn_checkpoint_clear_time(session);

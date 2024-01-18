@@ -23,7 +23,7 @@ __wt_cache_aggressive(WT_SESSION_IMPL *session)
 static inline uint64_t
 __wt_cache_read_gen(WT_SESSION_IMPL *session)
 {
-    return (S2C(session)->cache->read_gen);
+    return __wt_atomic_load64(&S2C(session)->cache->read_gen);
 }
 
 /*
@@ -33,7 +33,7 @@ __wt_cache_read_gen(WT_SESSION_IMPL *session)
 static inline void
 __wt_cache_read_gen_incr(WT_SESSION_IMPL *session)
 {
-    ++S2C(session)->cache->read_gen;
+    __wt_atomic_add64(&S2C(session)->cache->read_gen, 1);
 }
 
 /*
@@ -145,7 +145,7 @@ __wt_cache_bytes_plus_overhead(WT_CACHE *cache, uint64_t sz)
 static inline uint64_t
 __wt_cache_bytes_inuse(WT_CACHE *cache)
 {
-    return (__wt_cache_bytes_plus_overhead(cache, cache->bytes_inmem));
+    return (__wt_cache_bytes_plus_overhead(cache, __wt_atomic_load64(&cache->bytes_inmem)));
 }
 
 /*
@@ -166,7 +166,7 @@ __wt_cache_dirty_inuse(WT_CACHE *cache)
 static inline uint64_t
 __wt_cache_dirty_leaf_inuse(WT_CACHE *cache)
 {
-    return (__wt_cache_bytes_plus_overhead(cache, cache->bytes_dirty_leaf));
+    return (__wt_cache_bytes_plus_overhead(cache, __wt_atomic_load64(&cache->bytes_dirty_leaf)));
 }
 
 /*
@@ -176,7 +176,7 @@ __wt_cache_dirty_leaf_inuse(WT_CACHE *cache)
 static inline uint64_t
 __wt_cache_bytes_updates(WT_CACHE *cache)
 {
-    return (__wt_cache_bytes_plus_overhead(cache, cache->bytes_updates));
+    return (__wt_cache_bytes_plus_overhead(cache, __wt_atomic_load64(&cache->bytes_updates)));
 }
 
 /*
@@ -263,6 +263,7 @@ __wt_eviction_dirty_target(WT_CACHE *cache)
     double dirty_target, scrub_target;
 
     dirty_target = cache->eviction_dirty_target;
+    // TODO TODO TODO - suppressing because there are no gcc instrinsics for an atomic op on a float
     scrub_target = cache->eviction_scrub_target;
 
     return (scrub_target > 0 && scrub_target < dirty_target ? scrub_target : dirty_target);
@@ -492,7 +493,8 @@ __wt_cache_eviction_check(WT_SESSION_IMPL *session, bool busy, bool readonly, bo
      * other resources that could block checkpoints or eviction.
      */
     btree = S2BT_SAFE(session);
-    if (btree != NULL && (F_ISSET(btree, WT_BTREE_IN_MEMORY) || WT_IS_METADATA(session->dhandle)))
+    if (btree != NULL &&
+      (F_ISSET_ATOMIC_32(btree, WT_BTREE_IN_MEMORY) || WT_IS_METADATA(session->dhandle)))
         return (0);
 
     /* Check if eviction is needed. */

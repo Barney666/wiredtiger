@@ -295,7 +295,7 @@ struct __wt_name_flag {
  */
 #define WT_CONN_SET_INCR_BACKUP(conn)                        \
     do {                                                     \
-        F_SET_ATOMIC_32((conn), WT_CONN_INCR_BACKUP);                  \
+        F_SET_ATOMIC_32((conn), WT_CONN_INCR_BACKUP);        \
         FLD_SET((conn)->log_flags, WT_CONN_LOG_INCR_BACKUP); \
     } while (0)
 

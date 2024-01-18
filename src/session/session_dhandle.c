@@ -125,7 +125,7 @@ __wt_session_lock_dhandle(WT_SESSION_IMPL *session, uint32_t flags, bool *is_dea
     if (dhandle->excl_session == session) {
         if (!LF_ISSET(WT_DHANDLE_LOCK_ONLY) &&
           (!F_ISSET(dhandle, WT_DHANDLE_OPEN) ||
-            (btree != NULL && F_ISSET(btree, WT_BTREE_SPECIAL_FLAGS))))
+            (btree != NULL && F_ISSET_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS))))
             return (__wt_set_return(session, EBUSY));
         ++dhandle->excl_ref;
         return (0);
@@ -149,7 +149,7 @@ __wt_session_lock_dhandle(WT_SESSION_IMPL *session, uint32_t flags, bool *is_dea
         /*
          * If the handle is already open for a special operation, give up.
          */
-        if (btree != NULL && F_ISSET(btree, WT_BTREE_SPECIAL_FLAGS))
+        if (btree != NULL && F_ISSET_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS))
             return (__wt_set_return(session, EBUSY));
 
         /*
@@ -251,7 +251,7 @@ __wt_session_release_dhandle(WT_SESSION_IMPL *session)
      * release. Bulk loads are special because they may have huge root pages in memory, and we need
      * to push those pages out of the cache. The only way to do that is to close the handle.
      */
-    if (btree != NULL && F_ISSET(btree, WT_BTREE_BULK)) {
+    if (btree != NULL && F_ISSET_ATOMIC_32(btree, WT_BTREE_BULK)) {
         WT_ASSERT(
           session, F_ISSET(dhandle, WT_DHANDLE_EXCLUSIVE) && !F_ISSET(dhandle, WT_DHANDLE_DISCARD));
         /*
@@ -259,7 +259,7 @@ __wt_session_release_dhandle(WT_SESSION_IMPL *session)
          * checkpoint while it gathers a set of handles.
          */
         WT_WITH_SCHEMA_LOCK(session, ret = __wt_conn_dhandle_close(session, false, false));
-    } else if ((btree != NULL && F_ISSET(btree, WT_BTREE_SPECIAL_FLAGS)) ||
+    } else if ((btree != NULL && F_ISSET_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS)) ||
       F_ISSET(dhandle, WT_DHANDLE_DISCARD | WT_DHANDLE_DISCARD_KILL)) {
         WT_ASSERT(session, F_ISSET(dhandle, WT_DHANDLE_EXCLUSIVE));
 

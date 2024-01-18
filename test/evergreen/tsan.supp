@@ -1,0 +1,5 @@
+# Load this file with 
+# export TSAN_OPTIONS="suppressions=/home/ubuntu/src/wiredtiger/test/evergreen/tsan.supp"
+
+# No gcc atomic instrinsics for floats 
+race:__wt_eviction_dirty_target

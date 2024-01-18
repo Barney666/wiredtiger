@@ -320,7 +320,7 @@ __wt_evict_thread_run(WT_SESSION_IMPL *session, WT_THREAD *thread)
         ret = __evict_server(session, &did_work);
         FLD_CLR(cache->walk_session->lock_flags, WT_SESSION_LOCKED_PASS);
         FLD_CLR(session->lock_flags, WT_SESSION_LOCKED_PASS);
-        was_intr = cache->pass_intr != 0;
+        was_intr = __wt_atomic_loadv32(&cache->pass_intr) != 0;
         __wt_spin_unlock(session, &cache->evict_pass_lock);
         WT_ERR(ret);
 
@@ -376,7 +376,8 @@ __wt_evict_thread_stop(WT_SESSION_IMPL *session, WT_THREAD *thread)
      * when the connection is closing or when an error has occurred and connection panic flag is
      * set.
      */
-    WT_ASSERT(session, F_ISSET_ATOMIC_32(conn, WT_CONN_CLOSING | WT_CONN_PANIC | WT_CONN_RECOVERING));
+    WT_ASSERT(
+      session, F_ISSET_ATOMIC_32(conn, WT_CONN_CLOSING | WT_CONN_PANIC | WT_CONN_RECOVERING));
 
     /* Clear the eviction thread session flag. */
     F_CLR(session, WT_SESSION_EVICTION);
@@ -638,7 +639,7 @@ __evict_update_work(WT_SESSION_IMPL *session)
      * values could lead to surprising bugs in the future.
      */
     if (F_ISSET_ATOMIC_32(conn, WT_CONN_HS_OPEN) && __wt_hs_get_btree(session, &hs_tree) == 0) {
-        cache->bytes_hs = hs_tree->bytes_inmem;
+        __wt_atomic_store64(&cache->bytes_hs, __wt_atomic_load64(&hs_tree->bytes_inmem));
         cache->bytes_hs_dirty = hs_tree->bytes_dirty_intl + hs_tree->bytes_dirty_leaf;
     }
 
@@ -701,7 +702,7 @@ __evict_update_work(WT_SESSION_IMPL *session)
     }
 
     /* Update the global eviction state. */
-    cache->flags = flags;
+    __wt_atomic_store32(&cache->flags, flags);
 
     return (F_ISSET(cache, WT_CACHE_EVICT_ALL | WT_CACHE_EVICT_URGENT));
 }
@@ -742,7 +743,7 @@ __evict_pass(WT_SESSION_IMPL *session)
          * server does need to do some work.
          */
         __wt_cache_read_gen_incr(session);
-        ++cache->evict_pass_gen;
+        __wt_atomic_add64(&cache->evict_pass_gen, 1);
 
         /*
          * Update the oldest ID: we use it to decide whether pages are candidates for eviction.
@@ -1470,7 +1471,8 @@ retry:
     loop_count = 0;
     while (slot < max_entries && loop_count++ < conn->dhandle_count) {
         /* We're done if shutting down or reconfiguring. */
-        if (F_ISSET_ATOMIC_32(conn, WT_CONN_CLOSING) || F_ISSET_ATOMIC_32(conn, WT_CONN_RECONFIGURING))
+        if (F_ISSET_ATOMIC_32(conn, WT_CONN_CLOSING) ||
+          F_ISSET_ATOMIC_32(conn, WT_CONN_RECONFIGURING))
             break;
 
         /*

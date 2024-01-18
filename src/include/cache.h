@@ -273,6 +273,7 @@ struct __wt_cache_pool {
  * file.
  */
 #define WT_IS_HS(dh) F_ISSET(dh, WT_DHANDLE_HS)
+#define WT_IS_HS_BT(dh) F_ISSET_ATOMIC_32(dh, WT_DHANDLE_HS)
 
 /* Flags used with __wt_evict */
 /* AUTOMATIC FLAG VALUE GENERATION START 0 */

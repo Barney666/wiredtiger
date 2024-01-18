@@ -270,7 +270,7 @@ struct __wt_btree {
 #define WT_BTREE_UPGRADE 0x0800000u        /* Handle is for upgrade */
 #define WT_BTREE_VERIFY 0x1000000u         /* Handle is for verify */
                                            /* AUTOMATIC FLAG VALUE GENERATION STOP 32 */
-    uint32_t flags;
+    uint32_t flags_atomic_32;
 };
 
 /* Flags that make a btree handle special (not for normal use). */

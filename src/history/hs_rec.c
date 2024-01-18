@@ -110,7 +110,7 @@ __hs_insert_record(WT_SESSION_IMPL *session, WT_CURSOR *cursor, WT_BTREE *btree,
     hs_cbt = __wt_curhs_get_cbt(cursor);
 
     /* Sanity check that the btree is not a history store btree. */
-    WT_ASSERT(session, !WT_IS_HS(btree));
+    WT_ASSERT(session, !WT_IS_HS_BT(btree));
 
     /*
      * Only deltas or full updates should be written to the history store. More specifically, we

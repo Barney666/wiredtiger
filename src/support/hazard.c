@@ -78,7 +78,7 @@ __wt_hazard_set_func(WT_SESSION_IMPL *session, WT_REF *ref, bool *busyp
     *busyp = false;
 
     /* If a file can never be evicted, hazard pointers aren't required. */
-    if (F_ISSET(S2BT(session), WT_BTREE_IN_MEMORY))
+    if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_IN_MEMORY))
         return (0);
 
     /*
@@ -192,7 +192,7 @@ __wt_hazard_clear(WT_SESSION_IMPL *session, WT_REF *ref)
     WT_HAZARD *hp;
 
     /* If a file can never be evicted, hazard pointers aren't required. */
-    if (F_ISSET(S2BT(session), WT_BTREE_IN_MEMORY))
+    if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_IN_MEMORY))
         return (0);
 
     /*
@@ -350,7 +350,7 @@ __wt_hazard_check(WT_SESSION_IMPL *session, WT_REF *ref, WT_SESSION_IMPL **sessi
     cookie.search_ref = ref;
 
     /* If a file can never be evicted, hazard pointers aren't required. */
-    if (F_ISSET(S2BT(session), WT_BTREE_IN_MEMORY))
+    if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_IN_MEMORY))
         return (NULL);
 
     WT_STAT_CONN_INCR(session, cache_hazard_checks);

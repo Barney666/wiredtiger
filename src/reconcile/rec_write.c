@@ -626,7 +626,9 @@ __rec_init(WT_SESSION_IMPL *session, WT_REF *ref, uint32_t flags, WT_SALVAGE_COO
      * transaction running when reconciliation starts is considered uncommitted.
      */
     txn_global = &S2C(session)->txn_global;
-    WT_ORDERED_READ(r->last_running, txn_global->last_running);
+    // FIXME - atomics are SEQ_CST. Could we drop the ordered read here?
+    // Probably not. Remember some comments about atomics not prevent hoisting
+    WT_ORDERED_READ(r->last_running, __wt_atomic_loadv64(&txn_global->last_running));
 
     /*
      * Cache the pinned timestamp and oldest id, these are used to when we clear obsolete timestamps
@@ -1238,7 +1240,7 @@ __rec_is_checkpoint(WT_SESSION_IMPL *session, WT_RECONCILE *r)
      * checkpoint, before writing the checkpoint. In short, we don't do checkpoint writes here;
      * clear the boundary information as a reminder and create the checkpoint during wrapup.
      */
-    return (!F_ISSET(btree, WT_BTREE_NO_CHECKPOINT) && __wt_ref_is_root(r->ref));
+    return (!F_ISSET_ATOMIC_32(btree, WT_BTREE_NO_CHECKPOINT) && __wt_ref_is_root(r->ref));
 }
 
 /*

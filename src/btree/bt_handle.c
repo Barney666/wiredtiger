@@ -29,7 +29,7 @@ __btree_clear(WT_SESSION_IMPL *session)
     /*
      * If the tree hasn't gone through an open/close cycle, there's no cleanup to be done.
      */
-    if (!F_ISSET(btree, WT_BTREE_CLOSED))
+    if (!F_ISSET_ATOMIC_32(btree, WT_BTREE_CLOSED))
         return (0);
 
     /* Close the Huffman tree. */
@@ -78,15 +78,15 @@ __wt_btree_open(WT_SESSION_IMPL *session, const char *op_cfg[])
      */
     WT_RET(__btree_clear(session));
     memset(btree, 0, WT_BTREE_CLEAR_SIZE);
-    F_CLR(btree, ~WT_BTREE_SPECIAL_FLAGS);
+    F_CLR_ATOMIC_32(btree, ~WT_BTREE_SPECIAL_FLAGS);
 
     /* Set the data handle first, our called functions reasonably use it. */
     btree->dhandle = dhandle;
 
     /* Checkpoint and verify files are readonly. */
-    if (WT_DHANDLE_IS_CHECKPOINT(dhandle) || F_ISSET(btree, WT_BTREE_VERIFY) ||
+    if (WT_DHANDLE_IS_CHECKPOINT(dhandle) || F_ISSET_ATOMIC_32(btree, WT_BTREE_VERIFY) ||
       F_ISSET_ATOMIC_32(S2C(session), WT_CONN_READONLY))
-        F_SET(btree, WT_BTREE_READONLY);
+        F_SET_ATOMIC_32(btree, WT_BTREE_READONLY);
 
     /* Get the checkpoint information for this name/checkpoint pair. */
     WT_RET(__wt_meta_checkpoint(session, dhandle->name, dhandle->checkpoint, &ckpt));
@@ -99,12 +99,12 @@ __wt_btree_open(WT_SESSION_IMPL *session, const char *op_cfg[])
      * code for a discussion.
      */
     creation = ckpt.raw.size == 0;
-    if (!creation && F_ISSET(btree, WT_BTREE_BULK))
+    if (!creation && F_ISSET_ATOMIC_32(btree, WT_BTREE_BULK))
         WT_ERR_MSG(session, EINVAL, "bulk-load is only supported on newly created objects");
 
     /* Handle salvage configuration. */
     forced_salvage = false;
-    if (F_ISSET(btree, WT_BTREE_SALVAGE)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_SALVAGE)) {
         WT_ERR(__wt_config_gets(session, op_cfg, "force", &cval));
         forced_salvage = cval.val != 0;
     }
@@ -135,14 +135,14 @@ __wt_btree_open(WT_SESSION_IMPL *session, const char *op_cfg[])
      * Open the specified checkpoint unless it's a special command (special commands are responsible
      * for loading their own checkpoints, if any).
      */
-    if (!F_ISSET(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
+    if (!F_ISSET_ATOMIC_32(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
         /*
          * There are two reasons to load an empty tree rather than a checkpoint: either there is no
          * checkpoint (the file is being created), or the load call returns no root page (the
          * checkpoint is for an empty file).
          */
         WT_ERR(bm->checkpoint_load(bm, session, ckpt.raw.data, ckpt.raw.size, root_addr,
-          &root_addr_size, F_ISSET(btree, WT_BTREE_READONLY)));
+          &root_addr_size, F_ISSET_ATOMIC_32(btree, WT_BTREE_READONLY)));
         if (creation || root_addr_size == 0)
             WT_ERR(__btree_tree_open_empty(session, creation));
         else {
@@ -170,7 +170,8 @@ __wt_btree_open(WT_SESSION_IMPL *session, const char *op_cfg[])
      * configuration when finished so that handle close behaves correctly.
      */
     if (btree->original ||
-      F_ISSET(btree, WT_BTREE_IN_MEMORY | WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
+      F_ISSET_ATOMIC_32(
+        btree, WT_BTREE_IN_MEMORY | WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
         WT_ERR(__wt_evict_file_exclusive_on(session));
         btree->evict_disabled_open = true;
     }
@@ -206,9 +207,9 @@ __wt_btree_close(WT_SESSION_IMPL *session)
      *
      * Handles can be closed multiple times, ignore all but the first.
      */
-    if (F_ISSET(btree, WT_BTREE_CLOSED))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_CLOSED))
         return (0);
-    F_SET(btree, WT_BTREE_CLOSED);
+    F_SET_ATOMIC_32(btree, WT_BTREE_CLOSED);
 
     /*
      * Verify the history store state. If the history store is open and this btree has history store
@@ -235,7 +236,7 @@ __wt_btree_close(WT_SESSION_IMPL *session)
         btree->bm = NULL;
 
         /* Unload the checkpoint, unless it's a special command. */
-        if (!F_ISSET(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY))
+        if (!F_ISSET_ATOMIC_32(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY))
             WT_TRET(bm->checkpoint_unload(bm, session));
 
         /* Close the underlying block manager reference. */
@@ -372,9 +373,9 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
 
     WT_RET(__wt_config_gets(session, cfg, "cache_resident", &cval));
     if (cval.val)
-        F_SET(btree, WT_BTREE_IN_MEMORY);
+        F_SET_ATOMIC_32(btree, WT_BTREE_IN_MEMORY);
     else
-        F_CLR(btree, WT_BTREE_IN_MEMORY);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_IN_MEMORY);
 
     WT_RET(__wt_config_gets(session, cfg, "ignore_in_memory_cache_size", &cval));
     if (cval.val) {
@@ -382,9 +383,9 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
             WT_RET_MSG(session, EINVAL,
               "ignore_in_memory_cache_size setting is only valid with databases configured to run "
               "in-memory");
-        F_SET(btree, WT_BTREE_IGNORE_CACHE);
+        F_SET_ATOMIC_32(btree, WT_BTREE_IGNORE_CACHE);
     } else
-        F_CLR(btree, WT_BTREE_IGNORE_CACHE);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_IGNORE_CACHE);
 
     /*
      * Turn on logging when it's enabled in the database and not disabled for the tree. Timestamp
@@ -396,13 +397,13 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
     if (FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED)) {
         WT_RET(__wt_config_gets(session, cfg, "log.enabled", &cval));
         if (cval.val)
-            F_SET(btree, WT_BTREE_LOGGED);
+            F_SET_ATOMIC_32(btree, WT_BTREE_LOGGED);
     }
     if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY)) {
-        F_SET(btree, WT_BTREE_LOGGED);
+        F_SET_ATOMIC_32(btree, WT_BTREE_LOGGED);
         WT_RET(__wt_config_gets(session, cfg, "log.enabled", &cval));
         if (!cval.val)
-            F_CLR(btree, WT_BTREE_LOGGED);
+            F_CLR_ATOMIC_32(btree, WT_BTREE_LOGGED);
     }
 
     /*
@@ -412,21 +413,21 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
      * The metadata file ignores timestamps and is logged if at all possible.
      */
     if (WT_IS_METADATA(btree->dhandle)) {
-        F_SET(btree, WT_BTREE_IGNORE_CACHE);
-        F_SET(btree, WT_BTREE_LOGGED);
+        F_SET_ATOMIC_32(btree, WT_BTREE_IGNORE_CACHE);
+        F_SET_ATOMIC_32(btree, WT_BTREE_LOGGED);
     }
 
     /* The history store file is never logged and supports timestamps. */
     if (strcmp(session->dhandle->name, WT_HS_URI) == 0) {
         F_SET(btree->dhandle, WT_DHANDLE_HS);
-        F_CLR(btree, WT_BTREE_LOGGED);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_LOGGED);
     }
 
     WT_RET(__wt_config_gets(session, cfg, "tiered_object", &cval));
     if (cval.val)
-        F_SET(btree, WT_BTREE_NO_CHECKPOINT);
+        F_SET_ATOMIC_32(btree, WT_BTREE_NO_CHECKPOINT);
     else
-        F_CLR(btree, WT_BTREE_NO_CHECKPOINT);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_NO_CHECKPOINT);
 
     /* Get the last flush times for tiered storage, if applicable. */
     btree->flush_most_recent_secs = 0;
@@ -526,7 +527,7 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
     /* Configure read-only. */
     WT_RET(__wt_config_gets(session, cfg, "readonly", &cval));
     if (cval.val)
-        F_SET(btree, WT_BTREE_READONLY);
+        F_SET_ATOMIC_32(btree, WT_BTREE_READONLY);
 
     /* Initialize locks. */
     WT_RET(__wt_rwlock_init(session, &btree->ovfl_lock));
@@ -575,7 +576,8 @@ __btree_conf(WT_SESSION_IMPL *session, WT_CKPT *ckpt, bool is_ckpt)
      * happen during the recovery due to the unavailability of history store file, or when reading a
      * checkpoint.
      */
-    if ((!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) || F_ISSET(btree, WT_BTREE_LOGGED) ||
+    if ((!F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING) ||
+          F_ISSET_ATOMIC_32(btree, WT_BTREE_LOGGED) ||
           ckpt->run_write_gen < conn->last_ckpt_base_write_gen) &&
       !is_ckpt)
         btree->base_write_gen = btree->run_write_gen;
@@ -755,7 +757,7 @@ __btree_tree_open_empty(WT_SESSION_IMPL *session, bool creation)
     }
 
     /* Bulk loads require a leaf page for reconciliation: create it now. */
-    if (F_ISSET(btree, WT_BTREE_BULK)) {
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_BULK)) {
         WT_ERR(__wt_btree_new_leaf_page(session, ref));
         F_SET(ref, WT_REF_FLAG_LEAF);
         WT_REF_SET_STATE(ref, WT_REF_MEM);
@@ -1055,7 +1057,7 @@ __wt_btree_switch_object(WT_SESSION_IMPL *session, uint32_t objectid)
 
     btree = S2BT(session);
     /* If the btree is readonly, there is nothing to do. */
-    if (F_ISSET(btree, WT_BTREE_READONLY))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_READONLY))
         return (0);
 
     /*

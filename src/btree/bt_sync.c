@@ -188,7 +188,7 @@ __sync_page_skip(
     if (addr.type == WT_ADDR_LEAF_NO ||
       (addr.ta.newest_stop_durable_ts == WT_TS_NONE &&
         (F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CKPT_CLEANUP_SKIP_INT) ||
-          !F_ISSET(S2BT(session), WT_BTREE_LOGGED)))) {
+          !F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_LOGGED)))) {
         __wt_verbose_debug2(
           session, WT_VERB_CHECKPOINT_CLEANUP, "%p: page walk skipped", (void *)ref);
         WT_STAT_CONN_DATA_INCR(session, checkpoint_cleanup_pages_walk_skipped);
@@ -336,7 +336,8 @@ __wt_sync_file(WT_SESSION_IMPL *session, WT_CACHE_OP syncop)
          * the internal pages to improve cleanup.)
          */
         if (btree->type == BTREE_ROW || btree->type == BTREE_COL_VAR)
-            internal_cleanup = !F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT);
+            internal_cleanup =
+              !F_ISSET_ATOMIC_32(conn, WT_CONN_RECOVERING | WT_CONN_CLOSING_CHECKPOINT);
         else {
             LF_SET(WT_READ_CACHE);
             internal_cleanup = false;

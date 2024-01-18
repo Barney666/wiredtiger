@@ -72,7 +72,8 @@ __wt_page_out(WT_SESSION_IMPL *session, WT_PAGE **pagep)
      * page. We do ordinary eviction from dead trees until sweep gets to them, so we may not in the
      * WT_SYNC_DISCARD loop.
      */
-    if (F_ISSET(session->dhandle, WT_DHANDLE_DEAD) || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING))
+    if (F_ISSET(session->dhandle, WT_DHANDLE_DEAD) ||
+      F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING))
         __wt_page_modify_clear(session, page);
 
     WT_ASSERT_ALWAYS(session, !__wt_page_is_modified(page), "Attempting to discard dirty page");

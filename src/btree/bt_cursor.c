@@ -2188,7 +2188,7 @@ __wt_btcur_range_truncate(WT_TRUNCATE_INFO *trunc_info)
      * to commit without a timestamp (excluding logged tables as timestamps cannot be relevant to
      * them).
      */
-    if (!F_ISSET(btree, WT_BTREE_LOGGED) && F_ISSET(session->txn, WT_TXN_TS_NOT_SET))
+    if (!F_ISSET_ATOMIC_32(btree, WT_BTREE_LOGGED) && F_ISSET(session->txn, WT_TXN_TS_NOT_SET))
         WT_RET_MSG(session, EINVAL,
           "truncate operations may not yet be included in transactions that can commit without a "
           "timestamp. If your use case encounters this error, please reach out to the WiredTiger "

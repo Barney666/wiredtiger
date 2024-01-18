@@ -3298,7 +3298,8 @@ err:
          * generalize this. Record it here while we have the connection and set it after we destroy
          * the connection.
          */
-        if (F_ISSET_ATOMIC_32(conn, WT_CONN_DATA_CORRUPTION) && (ret == WT_PANIC || ret == WT_ERROR))
+        if (F_ISSET_ATOMIC_32(conn, WT_CONN_DATA_CORRUPTION) &&
+          (ret == WT_PANIC || ret == WT_ERROR))
             try_salvage = true;
         WT_TRET(__wt_connection_close(conn));
         /*

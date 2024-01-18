@@ -342,7 +342,8 @@ __wt_conn_dhandle_close(WT_SESSION_IMPL *session, bool final, bool mark_dead)
     __wt_spin_lock(session, &dhandle->close_lock);
 
     discard = is_mapped = marked_dead = false;
-    if (is_btree && !F_ISSET(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
+    if (is_btree &&
+      !F_ISSET_ATOMIC_32(btree, WT_BTREE_SALVAGE | WT_BTREE_UPGRADE | WT_BTREE_VERIFY)) {
         /*
          * If the handle is already marked dead, we're just here to discard it.
          */
@@ -372,7 +373,8 @@ __wt_conn_dhandle_close(WT_SESSION_IMPL *session, bool final, bool mark_dead)
          *
          */
         if (!discard && !marked_dead) {
-            if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY) || F_ISSET(btree, WT_BTREE_NO_CHECKPOINT))
+            if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY) ||
+              F_ISSET_ATOMIC_32(btree, WT_BTREE_NO_CHECKPOINT))
                 discard = true;
             else {
                 WT_TRET(__wt_checkpoint_close(session, final));
@@ -395,14 +397,14 @@ __wt_conn_dhandle_close(WT_SESSION_IMPL *session, bool final, bool mark_dead)
     switch (dhandle->type) {
     case WT_DHANDLE_TYPE_BTREE:
         WT_TRET(__wt_btree_close(session));
-        F_CLR(btree, WT_BTREE_SPECIAL_FLAGS);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS);
         break;
     case WT_DHANDLE_TYPE_TABLE:
         WT_TRET(__wt_schema_close_table(session, (WT_TABLE *)dhandle));
         break;
     case WT_DHANDLE_TYPE_TIERED:
         WT_TRET(__wt_tiered_close(session, (WT_TIERED *)dhandle, final));
-        F_CLR(btree, WT_BTREE_SPECIAL_FLAGS);
+        F_CLR_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS);
         break;
     case WT_DHANDLE_TYPE_TIERED_TREE:
         WT_TRET(__wt_tiered_tree_close(session, (WT_TIERED_TREE *)dhandle));
@@ -535,7 +537,7 @@ __wt_conn_dhandle_open(WT_SESSION_IMPL *session, const char *cfg[], uint32_t fla
     switch (dhandle->type) {
     case WT_DHANDLE_TYPE_BTREE:
         /* Set any special flags on the btree handle. */
-        F_SET(btree, LF_MASK(WT_BTREE_SPECIAL_FLAGS));
+        F_SET_ATOMIC_32(btree, LF_MASK(WT_BTREE_SPECIAL_FLAGS));
 
         /*
          * Allocate data-source statistics memory. We don't allocate that memory when allocating the
@@ -553,7 +555,7 @@ __wt_conn_dhandle_open(WT_SESSION_IMPL *session, const char *cfg[], uint32_t fla
         break;
     case WT_DHANDLE_TYPE_TIERED:
         /* Set any special flags on the btree handle. */
-        F_SET(btree, LF_MASK(WT_BTREE_SPECIAL_FLAGS));
+        F_SET_ATOMIC_32(btree, LF_MASK(WT_BTREE_SPECIAL_FLAGS));
 
         /*
          * Allocate data-source statistics memory. We don't allocate that memory when allocating the
@@ -591,7 +593,7 @@ __wt_conn_dhandle_open(WT_SESSION_IMPL *session, const char *cfg[], uint32_t fla
     if (0) {
 err:
         if (btree != NULL)
-            F_CLR(btree, WT_BTREE_SPECIAL_FLAGS);
+            F_CLR_ATOMIC_32(btree, WT_BTREE_SPECIAL_FLAGS);
     }
 
     if (WT_DHANDLE_BTREE(dhandle) && session->dhandle != NULL) {
@@ -651,7 +653,7 @@ __conn_btree_apply_internal(WT_SESSION_IMPL *session, WT_DATA_HANDLE *dhandle,
     if (time_start != 0) {
         time_stop = __wt_clock(session);
         time_diff = WT_CLOCKDIFF_US(time_stop, time_start);
-        if (F_ISSET(S2BT(session), WT_BTREE_SKIP_CKPT)) {
+        if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_SKIP_CKPT)) {
             ++conn->ckpt_skip;
             conn->ckpt_skip_time += time_diff;
         } else {
@@ -925,7 +927,8 @@ restart:
             continue;
 
         WT_WITH_DHANDLE(session, dhandle,
-          WT_TRET(__wt_conn_dhandle_discard_single(session, true, F_ISSET_ATOMIC_32(conn, WT_CONN_PANIC))));
+          WT_TRET(__wt_conn_dhandle_discard_single(
+            session, true, F_ISSET_ATOMIC_32(conn, WT_CONN_PANIC))));
         goto restart;
     }
 
@@ -951,7 +954,8 @@ restart:
     WT_TAILQ_SAFE_REMOVE_BEGIN(dhandle, &conn->dhqh, q, dhandle_tmp)
     {
         WT_WITH_DHANDLE(session, dhandle,
-          WT_TRET(__wt_conn_dhandle_discard_single(session, true, F_ISSET_ATOMIC_32(conn, WT_CONN_PANIC))));
+          WT_TRET(__wt_conn_dhandle_discard_single(
+            session, true, F_ISSET_ATOMIC_32(conn, WT_CONN_PANIC))));
     }
     WT_TAILQ_SAFE_REMOVE_END
 

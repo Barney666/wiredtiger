@@ -203,7 +203,8 @@ __wt_capacity_server_create(WT_SESSION_IMPL *session, const char *cfg[])
      * If it is a read only connection or if background fsync is not supported, then there is
      * nothing to do.
      */
-    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY) || !__wt_fsync_background_chk(session))
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_IN_MEMORY | WT_CONN_READONLY) ||
+      !__wt_fsync_background_chk(session))
         return (0);
 
     if (conn->capacity.total != 0)

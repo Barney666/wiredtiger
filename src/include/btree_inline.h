@@ -706,7 +706,7 @@ __wt_page_only_modify_set(WT_SESSION_IMPL *session, WT_PAGE *page)
 
     last_running = 0;
     if (page->modify->page_state == WT_PAGE_CLEAN)
-        last_running = S2C(session)->txn_global.last_running;
+        last_running = __wt_atomic_loadv64(&S2C(session)->txn_global.last_running);
 
     /*
      * We depend on the atomic operation being a write barrier, that is, a barrier to ensure all
@@ -801,8 +801,8 @@ __wt_page_modify_clear(WT_SESSION_IMPL *session, WT_PAGE *page)
      */
     if (__wt_page_is_modified(page)) {
         WT_ASSERT_ALWAYS(session,
-          F_ISSET(session->dhandle, WT_DHANDLE_DEAD) || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING) ||
-            !__wt_page_is_reconciling(page),
+          F_ISSET(session->dhandle, WT_DHANDLE_DEAD) ||
+            F_ISSET_ATOMIC_32(S2C(session), WT_CONN_CLOSING) || !__wt_page_is_reconciling(page),
           "Illegal attempt to mark a page clean that is being reconciled");
 
         /*
@@ -830,7 +830,7 @@ __wt_page_modify_set(WT_SESSION_IMPL *session, WT_PAGE *page)
      * Prepared records in the datastore require page updates, even for read-only handles, don't
      * mark the tree or page dirty.
      */
-    if (F_ISSET(S2BT(session), WT_BTREE_READONLY))
+    if (F_ISSET_ATOMIC_32(S2BT(session), WT_BTREE_READONLY))
         return;
 
     /*
@@ -2009,7 +2009,7 @@ __wt_page_release(WT_SESSION_IMPL *session, WT_REF *ref, uint32_t flags)
     /*
      * If hazard pointers aren't necessary for this file, we can't be evicting, we're done.
      */
-    if (F_ISSET(btree, WT_BTREE_IN_MEMORY))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_IN_MEMORY))
         return (0);
 
     /*

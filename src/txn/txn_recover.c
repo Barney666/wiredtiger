@@ -1063,7 +1063,8 @@ __wt_txn_recover(WT_SESSION_IMPL *session, const char *cfg[])
      * automatic recovery.
      */
     if (needs_rec &&
-      (FLD_ISSET(conn->log_flags, WT_CONN_LOG_RECOVER_ERR) || F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))) {
+      (FLD_ISSET(conn->log_flags, WT_CONN_LOG_RECOVER_ERR) ||
+        F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))) {
         if (F_ISSET_ATOMIC_32(conn, WT_CONN_READONLY))
             WT_ERR_MSG(session, WT_RUN_RECOVERY, "Read-only database needs recovery");
         WT_ERR_MSG(session, WT_RUN_RECOVERY, "Database needs recovery");

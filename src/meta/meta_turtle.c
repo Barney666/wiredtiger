@@ -160,7 +160,8 @@ __metadata_entry_worker(WT_SESSION_IMPL *session, WT_ITEM *key, WT_ITEM *value, 
      * backup remove list.
      */
     metadata_key = (char *)key->data;
-    if (F_ISSET_ATOMIC_32(conn, WT_CONN_BACKUP_PARTIAL_RESTORE) && WT_PREFIX_MATCH(metadata_key, "table:")) {
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_BACKUP_PARTIAL_RESTORE) &&
+      WT_PREFIX_MATCH(metadata_key, "table:")) {
         /* Assert that there should be no WiredTiger tables with a table format. */
         WT_ASSERT(session, __wt_name_check(session, (const char *)key->data, key->size, true) == 0);
         /*
@@ -224,7 +225,8 @@ __metadata_load_hot_backup(WT_SESSION_IMPL *session, WT_BACKUPHASH *backuphash)
         goto err;
 
     F_SET_ATOMIC_32(conn, WT_CONN_WAS_BACKUP);
-    if (F_ISSET_ATOMIC_32(conn, WT_CONN_BACKUP_PARTIAL_RESTORE) && meta_state.partial_backup_names != NULL) {
+    if (F_ISSET_ATOMIC_32(conn, WT_CONN_BACKUP_PARTIAL_RESTORE) &&
+      meta_state.partial_backup_names != NULL) {
         WT_ERR(__wt_calloc_def(session, meta_state.slot + 1, &conn->partial_backup_remove_ids));
         file_len = strlen("file:") + meta_state.max_len + strlen(".wt") + 1;
         WT_ERR(__wt_calloc_def(session, file_len, &filename));
@@ -665,7 +667,8 @@ err:
      * wrong, except for the compatibility setting which is optional. Failure to read the turtle
      * file when salvaging means it can't be used for salvage.
      */
-    if (ret == 0 || strcmp(key, WT_METADATA_COMPAT) == 0 || F_ISSET_ATOMIC_32(S2C(session), WT_CONN_SALVAGE))
+    if (ret == 0 || strcmp(key, WT_METADATA_COMPAT) == 0 ||
+      F_ISSET_ATOMIC_32(S2C(session), WT_CONN_SALVAGE))
         return (ret);
     F_SET_ATOMIC_32(S2C(session), WT_CONN_DATA_CORRUPTION);
     WT_RET_PANIC(session, WT_TRY_SALVAGE, "%s: fatal turtle file read error", WT_METADATA_TURTLE);

@@ -333,10 +333,10 @@ __wt_rts_btree_walk_btree(WT_SESSION_IMPL *session, wt_timestamp_t rollback_time
       WT_RTS_VERB_TAG_TREE_LOGGING
       "rollback to stable connection_logging_enabled=%s and btree_logging_enabled=%s",
       FLD_ISSET(conn->log_flags, WT_CONN_LOG_ENABLED) ? "true" : "false",
-      F_ISSET(btree, WT_BTREE_LOGGED) ? "true" : "false");
+      F_ISSET_ATOMIC_32(btree, WT_BTREE_LOGGED) ? "true" : "false");
 
     /* Files with commit-level durability (without timestamps), don't get their commits wiped. */
-    if (F_ISSET(btree, WT_BTREE_LOGGED))
+    if (F_ISSET_ATOMIC_32(btree, WT_BTREE_LOGGED))
         return (0);
 
     /* There is never anything to do for checkpoint handles. */
