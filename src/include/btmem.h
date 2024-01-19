@@ -1143,11 +1143,17 @@ struct __wt_ref {
 #define WT_REF_SET_STATE(ref, s)                                  \
     do {                                                          \
         WT_REF_SAVE_STATE(ref, s, __PRETTY_FUNCTION__, __LINE__); \
-        WT_PUBLISH((ref)->state, s);                              \
+        /* TODO - This replaces WT_PUBLISH. We may need a generalised WT_PUBLISH/WT_RELEASE macro */ \
+        WT_WRITE_BARRIER();                  \
+        __wt_atomic_storev8(&(ref)->state, s); \
     } while (0)
 #else
 #define WT_REF_CLEAR_SIZE (sizeof(WT_REF))
-#define WT_REF_SET_STATE(ref, s) WT_PUBLISH((ref)->state, s)
+#define WT_REF_SET_STATE(ref, s)             \
+    do {                                     \
+        WT_WRITE_BARRIER();                  \
+        __wt_atomic_storev8(&(ref)->state, s); \
+    } while (0)
 #endif
 };
 
@@ -1169,7 +1175,7 @@ struct __wt_ref {
     do {                                                                       \
         uint8_t __previous_state;                                              \
         for (;; __wt_yield()) {                                                \
-            __previous_state = (ref)->state;                                   \
+            __previous_state = __wt_atomic_loadv8(&(ref)->state);              \
             if (__previous_state != WT_REF_LOCKED &&                           \
               WT_REF_CAS_STATE(session, ref, __previous_state, WT_REF_LOCKED)) \
                 break;                                                         \

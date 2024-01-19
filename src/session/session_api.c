@@ -2543,7 +2543,7 @@ __open_session(WT_CONNECTION_IMPL *conn, WT_EVENT_HANDLER *event_handler, const 
      * close.
      */
     if (i >= conn->session_array.cnt) /* Defend against off-by-one errors. */
-        conn->session_array.cnt = i + 1;
+        __wt_atomic_store32(&conn->session_array.cnt, i + 1);
 
     /* Find the set of methods appropriate to this session. */
     if (F_ISSET_ATOMIC_32(conn, WT_CONN_MINIMAL) && !F_ISSET(session, WT_SESSION_INTERNAL))

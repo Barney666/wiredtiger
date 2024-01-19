@@ -345,7 +345,7 @@ struct __wt_session_impl {
             size_t len;
             uint64_t gen; /* Generation */
         } * list;
-        size_t cnt;   /* Array entries */
+        wt_shared size_t cnt;   /* Array entries */
         size_t alloc; /* Allocated bytes */
     } stash[WT_GENERATIONS];
 

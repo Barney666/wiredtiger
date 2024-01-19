@@ -84,7 +84,7 @@ __txn_remove_from_global_table(WT_SESSION_IMPL *session)
 
     txn_shared = WT_SESSION_TXN_SHARED(session);
 #endif
-    // TODO TODO TODO -> This was a publish. How do barriers, atomics, and TSan interact? 
+    // TODO TODO TODO -> This was a publish. How do barriers, atomics, and TSan interact?
     WT_WRITE_BARRIER();
     __wt_atomic_storev64(&txn_shared->id, WT_TXN_NONE);
 }
@@ -414,13 +414,13 @@ __txn_oldest_scan(WT_SESSION_IMPL *session, uint64_t *oldest_idp, uint64_t *last
         metadata_pinned = oldest_id;
 
     /* Walk the array of concurrent transactions. */
-    WT_ORDERED_READ(session_cnt, conn->session_array.cnt);
+    WT_ORDERED_READ(session_cnt, __wt_atomic_load32(&conn->session_array.cnt));
     WT_STAT_CONN_INCR(session, txn_walk_sessions);
     for (i = 0, s = txn_global->txn_shared_list; i < session_cnt; i++, s++) {
         WT_STAT_CONN_INCR(session, txn_sessions_walked);
         /* Update the last running transaction ID. */
-        while ((id = __wt_atomic_loadv64(&s->id)) != WT_TXN_NONE && WT_TXNID_LE(prev_oldest_id, id) &&
-          WT_TXNID_LT(id, last_running)) {
+        while ((id = __wt_atomic_loadv64(&s->id)) != WT_TXN_NONE &&
+          WT_TXNID_LE(prev_oldest_id, id) && WT_TXNID_LT(id, last_running)) {
             /*
              * If the transaction is still allocating its ID, then we spin here until it gets its
              * valid ID.

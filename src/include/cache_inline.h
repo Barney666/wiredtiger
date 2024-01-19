@@ -58,7 +58,7 @@ __wt_cache_read_gen_bump(WT_SESSION_IMPL *session, WT_PAGE *page)
      * current global generation, we don't bother updating the page. In other words, the goal is to
      * avoid some number of updates immediately after each update we have to make.
      */
-    page->read_gen = __wt_cache_read_gen(session) + WT_READGEN_STEP;
+    __wt_atomic_store64(&page->read_gen, __wt_cache_read_gen(session) + WT_READGEN_STEP);
 }
 
 /*

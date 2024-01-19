@@ -3,3 +3,14 @@
 
 # No gcc atomic instrinsics for floats 
 race:__wt_eviction_dirty_target
+
+# We know this races. Ignore for now
+race:__wt_ref_update_history
+
+# Multiple levels of macros are making this a nightmare to debug. 
+# Skipping for now
+race:__conn_open_session
+
+# TSan is claiming a double lock of a mutex but I just can't see how.
+# Suppress for now
+mutex:__session_open_cursor

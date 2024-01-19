@@ -297,7 +297,7 @@ __wt_page_in_func(WT_SESSION_IMPL *session, WT_REF *ref, uint32_t flags
 
     for (evict_skip = stalled = wont_need = false, force_attempts = 0, sleep_usecs = yield_cnt = 0;
          ;) {
-        switch (current_state = ref->state) {
+        switch (current_state = __wt_atomic_loadv8(&ref->state)) {
         case WT_REF_DELETED:
             /* Optionally limit reads to cache-only. */
             if (LF_ISSET(WT_READ_CACHE | WT_READ_NO_WAIT))
@@ -455,7 +455,7 @@ skip_evict:
                  * pre-fetch mechanism, count that as a page read directly from disk.
                  */
                 if (F_ISSET_ATOMIC_16(page, WT_PAGE_PREFETCH) ||
-                  page->read_gen == WT_READGEN_NOTSET)
+                  __wt_atomic_load64(&page->read_gen) == WT_READGEN_NOTSET)
                     ++session->pf.prefetch_disk_read_count;
                 else
                     session->pf.prefetch_disk_read_count = 0;

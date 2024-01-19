@@ -112,7 +112,7 @@ __wt_delete_page(WT_SESSION_IMPL *session, WT_REF *ref, bool *skipp)
     *skipp = false;
 
     /* If we have a clean page in memory, attempt to evict it. */
-    previous_state = ref->state;
+    previous_state = __wt_atomic_loadv8(&ref->state);
     if (previous_state == WT_REF_MEM &&
       WT_REF_CAS_STATE(session, ref, previous_state, WT_REF_LOCKED)) {
         if (__wt_page_is_modified(ref->page)) {
@@ -131,7 +131,7 @@ __wt_delete_page(WT_SESSION_IMPL *session, WT_REF *ref, bool *skipp)
     /*
      * Fast check to see if it's worth locking, then atomically switch the page's state to lock it.
      */
-    previous_state = ref->state;
+    previous_state = __wt_atomic_loadv8(&ref->state);
     switch (previous_state) {
     case WT_REF_DISK:
         break;

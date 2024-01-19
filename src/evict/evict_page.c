@@ -65,7 +65,7 @@ __wt_page_release_evict(WT_SESSION_IMPL *session, WT_REF *ref, uint32_t flags)
      * we can get exclusive access. Take some care with order of operations: if we release the
      * hazard pointer without first locking the page, it could be evicted in between.
      */
-    previous_state = ref->state;
+    previous_state = __wt_atomic_loadv8(&ref->state);
     locked =
       previous_state == WT_REF_MEM && WT_REF_CAS_STATE(session, ref, previous_state, WT_REF_LOCKED);
     if ((ret = __wt_hazard_clear(session, ref)) != 0 || !locked) {

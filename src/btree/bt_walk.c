@@ -434,7 +434,7 @@ descend:
             /*
              * If we see any child states other than deleted, the page isn't empty.
              */
-            current_state = ref->state;
+            current_state = __wt_atomic_loadv8(&ref->state);
             if (current_state != WT_REF_DELETED && !LF_ISSET(WT_READ_TRUNCATE))
                 empty_internal = false;
 

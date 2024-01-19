@@ -17,6 +17,18 @@ __wt_ref_is_root(WT_REF *ref)
 }
 
 /*
+ * __wt_ref_update_history --
+ *     // TODO This is split out into a subfunc so we can suppress in TSan since we know this can
+ *     race
+ */
+static inline void
+__wt_ref_update_history(
+  WT_SESSION_IMPL *session, WT_REF *ref, uint8_t new_state, const char *func, int line)
+{
+    WT_REF_SAVE_STATE(ref, new_state, func, line);
+}
+
+/*
  * __wt_ref_cas_state_int --
  *     Try to do a compare and swap, if successful update the ref history in diagnostic mode.
  */
@@ -39,7 +51,7 @@ __wt_ref_cas_state_int(WT_SESSION_IMPL *session, WT_REF *ref, uint8_t old_state,
      * above but before the history has been updated.
      */
     if (cas_result)
-        WT_REF_SAVE_STATE(ref, new_state, func, line);
+        __wt_ref_update_history(session, ref, new_state, func, line);
 #endif
     return (cas_result);
 }

@@ -157,11 +157,11 @@ __wt_stats_clear(void *stats_arg, int slot)
         if (WT_STAT_ENABLED(session))                                 \
             (void)__wt_atomic_subi64(&(stat)->fld, (int64_t)(value)); \
     } while (0)
-#define WT_STAT_INCRV_BASE(session, stat, fld, value) \
-    do {                                              \
-        if (WT_STAT_ENABLED(session))                 \
-        /* // HERE - Need to check if stats must become atomic */ \
-            __wt_atomic_addi64(&(stat)->fld, (int64_t)(value));          \
+#define WT_STAT_INCRV_BASE(session, stat, fld, value)                 \
+    do {                                                              \
+        if (WT_STAT_ENABLED(session))                                 \
+            /* // HERE - Need to check if all stats must become atomic */ \
+            __wt_atomic_addi64(&(stat)->fld, (int64_t)(value));       \
     } while (0)
 #define WT_STAT_INCRV_ATOMIC_BASE(session, stat, fld, value)          \
     do {                                                              \
@@ -188,10 +188,10 @@ __wt_stats_clear(void *stats_arg, int slot)
         WT_STAT_INCRV_ATOMIC_BASE(session, (stats)[(session)->stat_bucket], fld, value); \
     } while (0)
 #define WT_STAT_INCR(session, stats, fld) WT_STAT_INCRV(session, stats, fld, 1)
-#define WT_STAT_SET_BASE(session, stat, fld, value) \
-    do {                                            \
-        if (WT_STAT_ENABLED(session))               \
-            __wt_atomic_storei64(&(stat)->fld, (int64_t)(value));         \
+#define WT_STAT_SET_BASE(session, stat, fld, value)               \
+    do {                                                          \
+        if (WT_STAT_ENABLED(session))                             \
+            __wt_atomic_storei64(&(stat)->fld, (int64_t)(value)); \
     } while (0)
 #define WT_STAT_SET(session, stats, fld, value)                            \
     do {                                                                   \
