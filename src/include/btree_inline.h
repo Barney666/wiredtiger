@@ -16,6 +16,7 @@ __wt_ref_is_root(WT_REF *ref)
     return (ref->home == NULL);
 }
 
+#ifdef HAVE_REF_TRACK
 /*
  * __wt_ref_update_history --
  *     // TODO This is split out into a subfunc so we can suppress in TSan since we know this can
@@ -27,6 +28,7 @@ __wt_ref_update_history(
 {
     WT_REF_SAVE_STATE(ref, new_state, func, line);
 }
+#endif
 
 /*
  * __wt_ref_cas_state_int --
