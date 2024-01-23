@@ -284,8 +284,8 @@ class test_verify(wttest.WiredTigerTestCase, suite_subprocess):
         self.runWt(["verify", "-c", "table:" + self.tablename],
             errfilename="verifyerr.out", failure=True)
         self.check_non_empty_file("verifyerr.out")
-        # self.assertEqual(self.count_file_contains("verifyerr.out",
-        #     "calculated block checksum of"), 1)
+        self.assertEqual(self.count_file_contains("verifyerr.out",
+            "calculated block checksum of"), 1)
 
     def test_verify_process_read_corrupt_pages(self):
         """
