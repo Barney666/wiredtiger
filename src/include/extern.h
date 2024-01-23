@@ -2553,8 +2553,10 @@ static inline void __wt_rec_time_window_clear_obsolete(WT_SESSION_IMPL *session,
 static inline void __wt_ref_key(WT_PAGE *page, WT_REF *ref, void *keyp, size_t *sizep);
 static inline void __wt_ref_key_clear(WT_REF *ref);
 static inline void __wt_ref_key_onpage_set(WT_PAGE *page, WT_REF *ref, WT_CELL_UNPACK_ADDR *unpack);
+#ifdef HAVE_REF_TRACK
 static inline void __wt_ref_update_history(
   WT_SESSION_IMPL *session, WT_REF *ref, uint8_t new_state, const char *func, int line);
+#endif
 static inline void __wt_row_leaf_key_free(WT_SESSION_IMPL *session, WT_PAGE *page, WT_ROW *rip);
 static inline void __wt_row_leaf_key_info(WT_PAGE *page, void *copy, WT_IKEY **ikeyp,
   WT_CELL **cellp, void *datap, size_t *sizep, uint8_t *prefixp);

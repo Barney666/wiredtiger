@@ -149,7 +149,7 @@ __wt_atomic_cas_ptr(void *vp, void *old, void *newv)
     {                                                            \
         __atomic_store_n(vp, v, __ATOMIC_SEQ_CST);               \
     }
-WT_ATOMIC_FUNC(b, bool, bool *vp, bool v)
+// WT_ATOMIC_FUNC(b, bool, bool *vp, bool v)
 WT_ATOMIC_FUNC(8, uint8_t, uint8_t *vp, uint8_t v)
 WT_ATOMIC_FUNC(v8, uint8_t, volatile uint8_t *vp, volatile uint8_t v)
 WT_ATOMIC_FUNC(16, uint16_t, uint16_t *vp, uint16_t v)
@@ -162,6 +162,18 @@ WT_ATOMIC_FUNC(v64, uint64_t, volatile uint64_t *vp, volatile uint64_t v)
 WT_ATOMIC_FUNC(i64, int64_t, int64_t *vp, int64_t v)
 WT_ATOMIC_FUNC(iv64, int64_t, volatile int64_t *vp, volatile int64_t v)
 WT_ATOMIC_FUNC(size, size_t, size_t *vp, size_t v)
+
+// gcc complains about trying to implement atomic_fetch_add for bools. Which is p fair tbh
+static inline bool __wt_atomic_loadb(bool *vp)             
+{                                                            
+    return (__atomic_load_n(vp, __ATOMIC_SEQ_CST));          
+}                                                            
+
+static inline void __wt_atomic_storeb(bool *vp, bool v)    
+{                                                            
+    __atomic_store_n(vp, v, __ATOMIC_SEQ_CST);               
+}
+
 
 /* Compile read-write barrier */
 #define WT_COMPILER_BARRIER() __asm__ volatile("" ::: "memory")
