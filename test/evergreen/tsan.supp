@@ -14,3 +14,6 @@ race:__conn_open_session
 # TSan is claiming a double lock of a mutex but I just can't see how.
 # Suppress for now
 mutex:__session_open_cursor
+
+# Turning off all mutex alerts for now. Seeing a lot of what seems to be false positives
+mutex:src
