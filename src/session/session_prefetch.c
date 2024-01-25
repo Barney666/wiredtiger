@@ -47,8 +47,8 @@ __wt_session_prefetch_check(WT_SESSION_IMPL *session, WT_REF *ref)
         return (false);
     }
 
-    if (F_ISSET(
-          S2BT(session), WT_BTREE_ALTER | WT_BTREE_BULK | WT_BTREE_SALVAGE | WT_BTREE_UPGRADE)) {
+    if (F_ISSET(S2BT(session), WT_BTREE_SPECIAL_FLAGS) &&
+      !F_ISSET(S2BT(session), WT_BTREE_VERIFY)) {
         WT_STAT_CONN_INCR(session, block_prefetch_skipped_special_handle);
         WT_STAT_CONN_INCR(session, block_prefetch_skipped);
         return (false);
