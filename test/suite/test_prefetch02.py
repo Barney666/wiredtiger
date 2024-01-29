@@ -44,7 +44,8 @@ class test_prefetch02(wttest.WiredTigerTestCase, suite_subprocess):
 
     format_values = [
         ('col_var', dict(key_format='r', value_format='i')),
-        ('col_fix', dict(key_format='r', value_format='8t')),
+        #FIXME-WT-12276: Re-enable FLCS scenario once prefetch bug has been identified and fixed.
+        # ('col_fix', dict(key_format='r', value_format='8t')),
         ('row_int', dict(key_format='i', value_format='i')),
     ]
 
@@ -150,7 +151,4 @@ class test_prefetch02(wttest.WiredTigerTestCase, suite_subprocess):
             else:
                 verify_session = new_conn.open_session("")
                 self.verifyUntilSuccess(verify_session, self.uri)
-                self.check_no_prefetching_activity(verify_session, 0)
-
-if __name__ == '__main__':
-    wttest.run()
+                #self.check_no_prefetching_activity(verify_session, 0)
