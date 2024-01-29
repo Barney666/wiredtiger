@@ -934,6 +934,7 @@ struct __wt_ref_hist {
     uint32_t time_sec;
     uint16_t line;
     uint16_t state;
+    uint8_t flags;
 };
 
 /*
@@ -1132,6 +1133,7 @@ struct __wt_ref {
     do {                                                                  \
         (ref)->hist[(ref)->histoff].session = session;                    \
         (ref)->hist[(ref)->histoff].name = session->name;                 \
+        (ref)->hist[(ref)->histoff].flags = session->flags;               \
         __wt_seconds32(session, &(ref)->hist[(ref)->histoff].time_sec);   \
         (ref)->hist[(ref)->histoff].func = (f);                           \
         (ref)->hist[(ref)->histoff].line = (uint16_t)(l);                 \
