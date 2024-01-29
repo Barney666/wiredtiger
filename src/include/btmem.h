@@ -936,7 +936,7 @@ struct __wt_ref_hist {
     uint32_t time_sec;
     uint16_t line;
     uint16_t state;
-    uint8_t flags;
+    uint32_t flags;
 };
 
 /*
