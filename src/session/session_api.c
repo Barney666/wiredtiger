@@ -507,9 +507,9 @@ __session_reconfigure(WT_SESSION *wt_session, const char *config)
     WT_ERR_NOTFOUND_OK(ret, false);
 
     if (S2C(session)->prefetch_auto_on)
-        F_SET(session, WT_SESSION_PREFETCH);
+        F_SET(session, WT_SESSION_PREFETCH_ENABLED);
     else
-        F_CLR(session, WT_SESSION_PREFETCH);
+        F_CLR(session, WT_SESSION_PREFETCH_ENABLED);
 
     /*
      * Override any connection-level pre-fetch settings if a specific session-level setting was
@@ -518,14 +518,14 @@ __session_reconfigure(WT_SESSION *wt_session, const char *config)
     if (__wt_config_gets(session, cfg + 1, "prefetch.enabled", &cval) != WT_NOTFOUND) {
         if (cval.val) {
             if (!S2C(session)->prefetch_available) {
-                F_CLR(session, WT_SESSION_PREFETCH);
+                F_CLR(session, WT_SESSION_PREFETCH_ENABLED);
                 WT_ERR_MSG(session, EINVAL,
                   "pre-fetching cannot be enabled for the session if pre-fetching is configured as "
                   "unavailable");
             } else
-                F_SET(session, WT_SESSION_PREFETCH);
+                F_SET(session, WT_SESSION_PREFETCH_ENABLED);
         } else
-            F_CLR(session, WT_SESSION_PREFETCH);
+            F_CLR(session, WT_SESSION_PREFETCH_ENABLED);
     }
 
     WT_ERR_NOTFOUND_OK(ret, false);
@@ -770,9 +770,6 @@ __session_open_cursor(WT_SESSION *wt_session, const char *uri, WT_CURSOR *to_dup
                 WT_ERR(__wt_bad_object_type(session, uri));
         }
     }
-
-    if (config != NULL && (WT_PREFIX_MATCH(uri, "backup:") || to_dup != NULL))
-        __wt_verbose(session, WT_VERB_BACKUP, "Backup cursor config \"%s\"", config);
 
     WT_ERR(__session_open_cursor_int(
       session, uri, NULL, statjoin || dup_backup ? to_dup : NULL, cfg, hash_value, &cursor));
