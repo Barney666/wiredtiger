@@ -1135,7 +1135,7 @@ struct __wt_ref {
     do {                                                                  \
         (ref)->hist[(ref)->histoff].session = session;                    \
         (ref)->hist[(ref)->histoff].name = session->name;                 \
-        (ref)->hist[(ref)->histoff].flags = (ref)->flags;               \
+        (ref)->hist[(ref)->histoff].flags = (ref)->flags;                 \
         __wt_seconds32(session, &(ref)->hist[(ref)->histoff].time_sec);   \
         (ref)->hist[(ref)->histoff].func = (f);                           \
         (ref)->hist[(ref)->histoff].line = (uint16_t)(l);                 \
