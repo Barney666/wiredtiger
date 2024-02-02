@@ -1882,7 +1882,7 @@ __session_verify(WT_SESSION *wt_session, const char *uri, const char *config)
     WT_ERR(__wt_inmem_unsupported_op(session, NULL));
 
     /* Turn pre-fetching on for all verify sessions. */
-    F_SET(session, WT_SESSION_PREFETCH);
+    F_SET(session, WT_SESSION_PREFETCH_ENABLED);
 
     /* Block out checkpoints to avoid spurious EBUSY errors. */
     WT_WITH_CHECKPOINT_LOCK(session,
@@ -1891,7 +1891,7 @@ __session_verify(WT_SESSION *wt_session, const char *uri, const char *config)
           session, uri, __wt_verify, NULL, cfg, WT_DHANDLE_EXCLUSIVE | WT_BTREE_VERIFY)));
     WT_ERR(ret);
 err:
-    F_CLR(session, WT_SESSION_PREFETCH);
+    F_CLR(session, WT_SESSION_PREFETCH_ENABLED);
 
     if (ret != 0)
         WT_STAT_CONN_INCR(session, session_table_verify_fail);
