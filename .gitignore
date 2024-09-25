@@ -4,3 +4,5 @@ build/
 dist/clang-format
 /docs/
 test-compatibility-run/
+.idea/
+cmake-build-debug/
