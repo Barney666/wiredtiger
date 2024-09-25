@@ -1,0 +1,88 @@
+{
+	"backtrace" : 3,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"define_test_variants",
+			"define_c_test"
+		],
+		"files" : 
+		[
+			"test/ctest_helpers.cmake",
+			"test/csuite/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 143,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 273,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 182,
+				"parent" : 2
+			}
+		]
+	},
+	"id" : "create_dir_test_wt2447_join_main_table_row::@2fc14da3fc76c4f46bf7",
+	"name" : "create_dir_test_wt2447_join_main_table_row",
+	"paths" : 
+	{
+		"build" : "test/csuite",
+		"source" : "test/csuite"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/csuite/CMakeFiles/create_dir_test_wt2447_join_main_table_row",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/csuite/CMakeFiles/create_dir_test_wt2447_join_main_table_row.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/csuite/test_wt2447_join_main_table_row_test_dir.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

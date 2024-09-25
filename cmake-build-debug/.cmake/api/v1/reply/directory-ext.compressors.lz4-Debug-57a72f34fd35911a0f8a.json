@@ -1,0 +1,45 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"ext/compressors/lz4/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 46,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"ext/compressors/lz4/libwiredtiger_lz4.so"
+			],
+			"targetId" : "wiredtiger_lz4::@6b4d9f862dff4d2bfd12",
+			"targetIndex" : 138,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "ext/compressors/lz4",
+		"source" : "ext/compressors/lz4"
+	}
+}

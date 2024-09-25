@@ -1,0 +1,290 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "bench/workgen/_workgen.so"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"swig_add_library",
+			"target_link_libraries",
+			"swig_link_libraries",
+			"define_wiredtiger_library",
+			"target_compile_options",
+			"include_directories",
+			"source_python3_package",
+			"set_property",
+			"SWIG_ADD_SOURCE_TO_MODULE"
+		],
+		"files" : 
+		[
+			"/Users/barney/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/UseSWIG.cmake",
+			"bench/workgen/CMakeLists.txt",
+			"cmake/define_libwiredtiger.cmake",
+			"CMakeLists.txt",
+			"cmake/helpers.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 79,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 905,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 88,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 1034,
+				"parent" : 3
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 3,
+				"line" : 169,
+				"parent" : 5
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 53,
+				"parent" : 6
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 65,
+				"parent" : 6
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 110,
+				"parent" : 0
+			},
+			{
+				"command" : 7,
+				"file" : 1,
+				"line" : 44,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 4,
+				"line" : 676,
+				"parent" : 10
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 888,
+				"parent" : 1
+			},
+			{
+				"command" : 8,
+				"file" : 0,
+				"line" : 717,
+				"parent" : 12
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fPIC -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-sign-conversion"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-w"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-std=c++17"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-I/Users/barney/CLionProjects/barney_github/wiredtiger"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-I/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/config"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-I/Users/barney/CLionProjects/barney_github/wiredtiger/bench/workgen"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : ""
+				}
+			],
+			"defines" : 
+			[
+				{
+					"define" : "workgen_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 11,
+					"path" : "/opt/homebrew/opt/python@3.12/Frameworks/Python.framework/Versions/3.12/include/python3.12"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/bench/workgen"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/config"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/src/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/test/utility"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 4,
+			"id" : "wiredtiger_shared::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "workgen_cxx::@c5e6b0e85cf1700bd4b7"
+		}
+	],
+	"id" : "workgen::@c5e6b0e85cf1700bd4b7",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "bench/workgen/libworkgen_cxx.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "libwiredtiger.11.3.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "/opt/homebrew/opt/python@3.12/Frameworks/Python.framework/Versions/3.12/lib/libpython3.12.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libpthread.tbd",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libdl.tbd",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "workgen",
+	"nameOnDisk" : "_workgen.so",
+	"paths" : 
+	{
+		"build" : "bench/workgen",
+		"source" : "bench/workgen"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/bench/workgen/CMakeFiles/workgen.dir/workgenPYTHON_wrap.cxx",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/bench/workgen/workgen.py",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"path" : "bench/workgen/workgen.i",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

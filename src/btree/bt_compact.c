@@ -341,10 +341,23 @@ __wt_compact(WT_SESSION_IMPL *session)
             bm->compact_progress(bm, session, &msg_count);
             WT_ERR(__wt_session_compact_check_timeout(session));
 
-            if (__wt_cache_stuck(session))
-                WT_ERR(EBUSY);
+            if (__wt_cache_stuck(session)) {
+                if (__wt_session_compact_check_wait_timeout(session)) {
+                    WT_ERR(EBUSY);
+                }
+                /* wait for cache eviction, not set i. */
+                __wt_verbose_debug(session, WT_VERB_COMPACT,
+                  "Compact operation is blocked to wait because EBUSY, not yet %" PRIu64 " second(s). Sleep 1s.",
+                  session->compact->max_wait_busy_time);
+                __wt_sleep(1, 0);
+                continue;
+            }
 
             i = 0;
+            if (session->compact->begin_wait.tv_sec != -1) {
+                session->compact->begin_wait.tv_sec = -1;
+                __wt_verbose_info(session, WT_VERB_COMPACT, "%s", "Compact wait done, clear begin_wait.");
+            }
         }
 
         /*

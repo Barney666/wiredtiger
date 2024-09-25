@@ -182,11 +182,11 @@ __wt_block_compact_skip(WT_SESSION_IMPL *session, WT_BLOCK *block, bool *skipp)
  * __compact_page_skip --
  *     Return if writing a particular page will shrink the file.
  */
-static void
+static WT_EXT*
 __compact_page_skip(
-  WT_SESSION_IMPL *session, WT_BLOCK *block, wt_off_t offset, uint32_t size, bool *skipp)
+  WT_SESSION_IMPL *session, WT_BLOCK *block, wt_off_t offset, uint32_t size, bool *skipp, bool rewrite)
 {
-    WT_EXT *ext;
+    WT_EXT *ext = NULL;
     WT_EXTLIST *el;
     wt_off_t limit;
 
@@ -211,7 +211,9 @@ __compact_page_skip(
             }
         }
     }
-    __wt_spin_unlock(session, &block->live_lock);
+    if (!rewrite)
+        __wt_spin_unlock(session, &block->live_lock);
+    return ext;
 }
 
 /*
@@ -233,7 +235,7 @@ __wt_block_compact_page_skip(
     WT_RET(__wt_block_addr_unpack(
       session, block, addr, addr_size, &objectid, &offset, &size, &checksum));
 
-    __compact_page_skip(session, block, offset, size, skipp);
+    __compact_page_skip(session, block, offset, size, skipp, false);
 
     ++block->compact_pages_reviewed;
     if (*skipp)
@@ -268,10 +270,16 @@ __wt_block_compact_page_rewrite(
       session, block, addr, *addr_sizep, &objectid, &offset, &size, &checksum));
 
     /* Check if the block is worth rewriting. */
-    __compact_page_skip(session, block, offset, size, skipp);
+    WT_EXT* ext_reuse = __compact_page_skip(session, block, offset, size, skipp, true);
 
-    if (*skipp)
+    if (*skipp) {
+        __wt_spin_unlock(session, &block->live_lock);
         return (0);
+    } else if (ext_reuse == NULL) {
+        __wt_spin_unlock(session, &block->live_lock);
+        __wt_verbose_info(session, WT_VERB_COMPACT, "%s.", "Compact will not skip but got NULL reuse extent");
+        return EINVAL;
+    }
 
     /* Read the block. */
     WT_ERR(__wt_scr_alloc(session, size, &tmp));
@@ -279,8 +287,9 @@ __wt_block_compact_page_rewrite(
 
     /* Allocate a replacement block. */
     WT_ERR(__wt_block_ext_prealloc(session, 5));
-    __wt_spin_lock(session, &block->live_lock);
-    ret = __wt_block_alloc(session, block, &new_offset, (wt_off_t)size);
+    //    __wt_spin_lock(session, &block->live_lock);
+    ret = __wt_block_alloc_for_compact(session, block, &new_offset, (wt_off_t)size, ext_reuse);
+    //    ret = __wt_block_alloc(session, block, &new_offset, (wt_off_t)size);
     __wt_spin_unlock(session, &block->live_lock);
     WT_ERR(ret);
     discard_block = true;

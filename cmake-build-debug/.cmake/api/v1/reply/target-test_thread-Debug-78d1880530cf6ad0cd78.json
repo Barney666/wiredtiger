@@ -1,0 +1,301 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "test/thread/t"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"create_test_executable",
+			"target_link_libraries",
+			"define_wiredtiger_library",
+			"add_dependencies",
+			"target_compile_options",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"test/ctest_helpers.cmake",
+			"test/thread/CMakeLists.txt",
+			"cmake/define_libwiredtiger.cmake",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 39,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 75,
+				"parent" : 1
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 169,
+				"parent" : 4
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 53,
+				"parent" : 5
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 65,
+				"parent" : 5
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 121,
+				"parent" : 1
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 61,
+				"parent" : 1
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 64,
+				"parent" : 1
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -Og -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Werror"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-cast-align"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-documentation-unknown-command"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-format-nonliteral"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-packed"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-padded"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-reserved-id-macro"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-zero-length-array"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-cast-qual"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-thread-safety-analysis"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-disabled-macro-expansion"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-extra-semi-stmt"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-unknown-warning-option"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-poison-system-directories"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-implicit-fallthrough"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-implicit-int-float-conversion"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Weverything"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 10,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/src/include"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/test/utility"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/config"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "wiredtiger_shared::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 3,
+			"id" : "test_util::@22f79ade9b5109e3aaff"
+		},
+		{
+			"backtrace" : 8,
+			"id" : "copy_file_test_thread_smoke.sh::@1659016f2ef6fcb8327d"
+		}
+	],
+	"id" : "test_thread::@1659016f2ef6fcb8327d",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -Og -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,@loader_path/../../",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "test/utility/libtest_util.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "libwiredtiger.11.3.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libpthread.tbd",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libdl.tbd",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "test_thread",
+	"nameOnDisk" : "t",
+	"paths" : 
+	{
+		"build" : "test/thread",
+		"source" : "test/thread"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "test/thread/file.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "test/thread/rw.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "test/thread/stats.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "test/thread/t.c",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

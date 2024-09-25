@@ -1,0 +1,919 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+ld: library not found for -lSystem
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /Library/Developer/CommandLineTools/usr/bin/c++ 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+ld: library not found for -lc++
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+Apple clang version 13.1.6 (clang-1316.0.21.2.3)
+Target: arm64-apple-darwin21.4.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+Performing C SOURCE FILE Test HAVE_BUILD_MODE_C_FLAGS failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_f30dd && [1/2] Building C object CMakeFiles/cmTC_f30dd.dir/src.c.o
+FAILED: CMakeFiles/cmTC_f30dd.dir/src.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc -DHAVE_BUILD_MODE_C_FLAGS  -fsanitize=memory -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics   -fsanitize=memory -fno-optimize-sibling-calls -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -MD -MT CMakeFiles/cmTC_f30dd.dir/src.c.o -MF CMakeFiles/cmTC_f30dd.dir/src.c.o.d -o CMakeFiles/cmTC_f30dd.dir/src.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+clang: error: unsupported option '-fsanitize=memory' for target 'arm64-apple-darwin21.4.0'
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if files x86intrin.h exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_a4bf0 && [1/2] Building C object CMakeFiles/cmTC_a4bf0.dir/has_include_HAVE_X86INTRIN_H.c.o
+FAILED: CMakeFiles/cmTC_a4bf0.dir/has_include_HAVE_X86INTRIN_H.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_a4bf0.dir/has_include_HAVE_X86INTRIN_H.c.o -MF CMakeFiles/cmTC_a4bf0.dir/has_include_HAVE_X86INTRIN_H.c.o.d -o CMakeFiles/cmTC_a4bf0.dir/has_include_HAVE_X86INTRIN_H.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:13:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86gprintrin.h:15:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/hresetintrin.h:42:27: error: invalid input constraint 'a' in asm
+  __asm__ ("hreset $0" :: "a"(__eax));
+                          ^
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:17:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:50:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_vec_init_v2si(__i, 0);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:129:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packsswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:159:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packssdw((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:189:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packuswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:216:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:239:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:260:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhdq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:287:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:310:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:331:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckldq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:352:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:373:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:394:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddd((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:416:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:439:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:461:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:483:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:504:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.
+
+
+Source:
+/* */
+#include <x86intrin.h>
+
+
+int main(void){return 0;}
+
+Determining if the fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_d700c && [1/2] Building C object CMakeFiles/cmTC_d700c.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_d700c.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_d700c.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_d700c.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_d700c.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fallocate'
+  return ((int*)(&fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fallocate
+  return ((int*)(&fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fdatasync exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_89fd7 && [1/2] Building C object CMakeFiles/cmTC_89fd7.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_89fd7.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_89fd7.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_89fd7.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_89fd7.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fdatasync'
+  return ((int*)(&fdatasync))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fdatasync
+  return ((int*)(&fdatasync))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+ld: library not found for -lSystem
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /Library/Developer/CommandLineTools/usr/bin/c++ 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+ld: library not found for -lc++
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+Apple clang version 13.1.6 (clang-1316.0.21.2.3)
+Target: arm64-apple-darwin21.4.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+Performing C SOURCE FILE Test HAVE_BUILD_MODE_C_FLAGS failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_fc3ea && [1/2] Building C object CMakeFiles/cmTC_fc3ea.dir/src.c.o
+FAILED: CMakeFiles/cmTC_fc3ea.dir/src.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc -DHAVE_BUILD_MODE_C_FLAGS  -fsanitize=memory -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics   -fsanitize=memory -fno-optimize-sibling-calls -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -MD -MT CMakeFiles/cmTC_fc3ea.dir/src.c.o -MF CMakeFiles/cmTC_fc3ea.dir/src.c.o.d -o CMakeFiles/cmTC_fc3ea.dir/src.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+clang: error: unsupported option '-fsanitize=memory' for target 'arm64-apple-darwin21.4.0'
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if files x86intrin.h exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_e9eb9 && [1/2] Building C object CMakeFiles/cmTC_e9eb9.dir/has_include_HAVE_X86INTRIN_H.c.o
+FAILED: CMakeFiles/cmTC_e9eb9.dir/has_include_HAVE_X86INTRIN_H.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_e9eb9.dir/has_include_HAVE_X86INTRIN_H.c.o -MF CMakeFiles/cmTC_e9eb9.dir/has_include_HAVE_X86INTRIN_H.c.o.d -o CMakeFiles/cmTC_e9eb9.dir/has_include_HAVE_X86INTRIN_H.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:13:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86gprintrin.h:15:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/hresetintrin.h:42:27: error: invalid input constraint 'a' in asm
+  __asm__ ("hreset $0" :: "a"(__eax));
+                          ^
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:17:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:50:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_vec_init_v2si(__i, 0);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:129:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packsswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:159:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packssdw((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:189:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packuswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:216:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:239:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:260:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhdq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:287:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:310:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:331:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckldq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:352:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:373:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:394:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddd((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:416:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:439:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:461:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:483:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:504:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.
+
+
+Source:
+/* */
+#include <x86intrin.h>
+
+
+int main(void){return 0;}
+
+Determining if the fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_f9527 && [1/2] Building C object CMakeFiles/cmTC_f9527.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_f9527.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_f9527.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_f9527.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_f9527.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fallocate'
+  return ((int*)(&fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fallocate
+  return ((int*)(&fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fdatasync exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_75222 && [1/2] Building C object CMakeFiles/cmTC_75222.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_75222.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_75222.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_75222.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_75222.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fdatasync'
+  return ((int*)(&fdatasync))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fdatasync
+  return ((int*)(&fdatasync))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fadvise exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_f93f6 && [1/2] Building C object CMakeFiles/cmTC_f93f6.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_f93f6.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_f93f6.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_f93f6.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_f93f6.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fadvise'
+  return ((int*)(&posix_fadvise))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fadvise
+  return ((int*)(&posix_fadvise))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_14ac6 && [1/2] Building C object CMakeFiles/cmTC_14ac6.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_14ac6.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_14ac6.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_14ac6.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_14ac6.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fallocate'
+  return ((int*)(&posix_fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fallocate
+  return ((int*)(&posix_fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sync_file_range exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_e8f41 && [1/2] Building C object CMakeFiles/cmTC_e8f41.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_e8f41.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_e8f41.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_e8f41.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_e8f41.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'sync_file_range'
+  return ((int*)(&sync_file_range))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sync_file_range
+  return ((int*)(&sync_file_range))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the timer_create exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_a361d && [1/2] Building C object CMakeFiles/cmTC_a361d.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_a361d.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_a361d.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_a361d.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_a361d.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:9:19: error: use of undeclared identifier 'timer_create'
+  return ((int*)(&timer_create))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <signal.h>
+#include <time.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef timer_create
+  return ((int*)(&timer_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C SOURCE FILE Test HAVE_BUILD_MODE_C_FLAGS failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_ad9d2 && [1/2] Building C object CMakeFiles/cmTC_ad9d2.dir/src.c.o
+FAILED: CMakeFiles/cmTC_ad9d2.dir/src.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc -DHAVE_BUILD_MODE_C_FLAGS  -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -fsanitize=memory -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics   -fsanitize=memory -fno-optimize-sibling-calls -O1 -g -fno-omit-frame-pointer -MD -MT CMakeFiles/cmTC_ad9d2.dir/src.c.o -MF CMakeFiles/cmTC_ad9d2.dir/src.c.o.d -o CMakeFiles/cmTC_ad9d2.dir/src.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+clang: error: unsupported option '-fsanitize=memory' for target 'arm64-apple-darwin21.4.0'
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if files x86intrin.h exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_00a0f && [1/2] Building C object CMakeFiles/cmTC_00a0f.dir/has_include_HAVE_X86INTRIN_H.c.o
+FAILED: CMakeFiles/cmTC_00a0f.dir/has_include_HAVE_X86INTRIN_H.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_00a0f.dir/has_include_HAVE_X86INTRIN_H.c.o -MF CMakeFiles/cmTC_00a0f.dir/has_include_HAVE_X86INTRIN_H.c.o.d -o CMakeFiles/cmTC_00a0f.dir/has_include_HAVE_X86INTRIN_H.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:13:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86gprintrin.h:15:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/hresetintrin.h:42:27: error: invalid input constraint 'a' in asm
+  __asm__ ("hreset $0" :: "a"(__eax));
+                          ^
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:17:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:50:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_vec_init_v2si(__i, 0);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:129:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packsswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:159:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packssdw((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:189:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packuswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:216:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:239:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:260:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhdq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:287:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:310:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:331:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckldq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:352:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:373:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:394:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddd((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:416:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:439:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:461:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:483:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:504:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.
+
+
+Source:
+/* */
+#include <x86intrin.h>
+
+
+int main(void){return 0;}
+
+Determining if the fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_ea58b && [1/2] Building C object CMakeFiles/cmTC_ea58b.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_ea58b.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_ea58b.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_ea58b.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_ea58b.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fallocate'
+  return ((int*)(&fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fallocate
+  return ((int*)(&fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fadvise exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_a2051 && [1/2] Building C object CMakeFiles/cmTC_a2051.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_a2051.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_a2051.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_a2051.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_a2051.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fadvise'
+  return ((int*)(&posix_fadvise))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fadvise
+  return ((int*)(&posix_fadvise))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_165d8 && [1/2] Building C object CMakeFiles/cmTC_165d8.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_165d8.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_165d8.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_165d8.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_165d8.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fallocate'
+  return ((int*)(&posix_fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fallocate
+  return ((int*)(&posix_fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sync_file_range exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_9483c && [1/2] Building C object CMakeFiles/cmTC_9483c.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_9483c.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_9483c.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_9483c.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_9483c.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'sync_file_range'
+  return ((int*)(&sync_file_range))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sync_file_range
+  return ((int*)(&sync_file_range))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the timer_create exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_f951b && [1/2] Building C object CMakeFiles/cmTC_f951b.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_f951b.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_f951b.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_f951b.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_f951b.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:9:19: error: use of undeclared identifier 'timer_create'
+  return ((int*)(&timer_create))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <signal.h>
+#include <time.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef timer_create
+  return ((int*)(&timer_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C SOURCE FILE Test HAVE_BUILD_MODE_C_FLAGS failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_b62b0 && [1/2] Building C object CMakeFiles/cmTC_b62b0.dir/src.c.o
+FAILED: CMakeFiles/cmTC_b62b0.dir/src.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc -DHAVE_BUILD_MODE_C_FLAGS  -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -fsanitize=memory -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics   -fsanitize=memory -fno-optimize-sibling-calls -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -MD -MT CMakeFiles/cmTC_b62b0.dir/src.c.o -MF CMakeFiles/cmTC_b62b0.dir/src.c.o.d -o CMakeFiles/cmTC_b62b0.dir/src.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+clang: error: unsupported option '-fsanitize=memory' for target 'arm64-apple-darwin21.4.0'
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if files x86intrin.h exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_a5387 && [1/2] Building C object CMakeFiles/cmTC_a5387.dir/has_include_HAVE_X86INTRIN_H.c.o
+FAILED: CMakeFiles/cmTC_a5387.dir/has_include_HAVE_X86INTRIN_H.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_a5387.dir/has_include_HAVE_X86INTRIN_H.c.o -MF CMakeFiles/cmTC_a5387.dir/has_include_HAVE_X86INTRIN_H.c.o.d -o CMakeFiles/cmTC_a5387.dir/has_include_HAVE_X86INTRIN_H.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:13:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86gprintrin.h:15:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/hresetintrin.h:42:27: error: invalid input constraint 'a' in asm
+  __asm__ ("hreset $0" :: "a"(__eax));
+                          ^
+In file included from /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CheckIncludeFiles/has_include_HAVE_X86INTRIN_H.c:2:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/x86intrin.h:15:
+In file included from /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/immintrin.h:17:
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:50:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_vec_init_v2si(__i, 0);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:129:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packsswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:159:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packssdw((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:189:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_packuswb((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:216:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:239:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:260:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckhdq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:287:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklbw((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:310:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpcklwd((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:331:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_punpckldq((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:352:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:373:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:394:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddd((__v2si)__m1, (__v2si)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:416:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:439:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddsw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:461:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:483:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_paddusw((__v4hi)__m1, (__v4hi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/mmintrin.h:504:12: error: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different size
+    return (__m64)__builtin_ia32_psubb((__v8qi)__m1, (__v8qi)__m2);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.
+
+
+Source:
+/* */
+#include <x86intrin.h>
+
+
+int main(void){return 0;}
+
+Determining if the fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_d3735 && [1/2] Building C object CMakeFiles/cmTC_d3735.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_d3735.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_d3735.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_d3735.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_d3735.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'fallocate'
+  return ((int*)(&fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fallocate
+  return ((int*)(&fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fadvise exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_f3986 && [1/2] Building C object CMakeFiles/cmTC_f3986.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_f3986.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_f3986.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_f3986.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_f3986.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fadvise'
+  return ((int*)(&posix_fadvise))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fadvise
+  return ((int*)(&posix_fadvise))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the posix_fallocate exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_9001f && [1/2] Building C object CMakeFiles/cmTC_9001f.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_9001f.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_9001f.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_9001f.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_9001f.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_fallocate'
+  return ((int*)(&posix_fallocate))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_fallocate
+  return ((int*)(&posix_fallocate))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sync_file_range exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_cd442 && [1/2] Building C object CMakeFiles/cmTC_cd442.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_cd442.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_cd442.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_cd442.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_cd442.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'sync_file_range'
+  return ((int*)(&sync_file_range))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sync_file_range
+  return ((int*)(&sync_file_range))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the timer_create exist failed with the following output:
+Change Dir: /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/Users/barney/Applications/CLion.app/Contents/bin/ninja/mac/ninja cmTC_a83e9 && [1/2] Building C object CMakeFiles/cmTC_a83e9.dir/CheckSymbolExists.c.o
+FAILED: CMakeFiles/cmTC_a83e9.dir/CheckSymbolExists.c.o 
+/Library/Developer/CommandLineTools/usr/bin/cc   -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -DWT_ARCH=aarch64 -DWT_OS=darwin -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -MD -MT CMakeFiles/cmTC_a83e9.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_a83e9.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_a83e9.dir/CheckSymbolExists.c.o -c /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:9:19: error: use of undeclared identifier 'timer_create'
+  return ((int*)(&timer_create))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File /Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <signal.h>
+#include <time.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef timer_create
+  return ((int*)(&timer_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

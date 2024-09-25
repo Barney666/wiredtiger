@@ -1,0 +1,305 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "lang/python/_wiredtiger.so"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"swig_add_library",
+			"target_link_libraries",
+			"swig_link_libraries",
+			"define_wiredtiger_library",
+			"target_compile_options",
+			"include_directories",
+			"source_python3_package",
+			"set_property",
+			"SWIG_ADD_SOURCE_TO_MODULE"
+		],
+		"files" : 
+		[
+			"/Users/barney/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/UseSWIG.cmake",
+			"lang/python/CMakeLists.txt",
+			"cmake/define_libwiredtiger.cmake",
+			"CMakeLists.txt",
+			"cmake/helpers.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 60,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 905,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 139,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 1034,
+				"parent" : 3
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 3,
+				"line" : 169,
+				"parent" : 5
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 53,
+				"parent" : 6
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 65,
+				"parent" : 6
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 135,
+				"parent" : 0
+			},
+			{
+				"command" : 7,
+				"file" : 1,
+				"line" : 38,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 4,
+				"line" : 676,
+				"parent" : 10
+			},
+			{
+				"command" : 9,
+				"file" : 0,
+				"line" : 888,
+				"parent" : 1
+			},
+			{
+				"command" : 8,
+				"file" : 0,
+				"line" : 717,
+				"parent" : 12
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -march=armv8-a+crc -moutline-atomics -DHAVE_ARM_NEON_INTRIN_H -Og -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fPIC -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-pointer-sign"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-ignored-qualifiers"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-incompatible-pointer-types"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-int-conversion"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-sign-conversion"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-missing-prototypes"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-conditional-uninitialized"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-shorten-64-to-32"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-used-but-marked-unused"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-unused-macros"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-unused-variable"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-strict-prototypes"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-I/Users/barney/CLionProjects/barney_github/wiredtiger"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-I/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/config"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-Wno-deprecated-declarations"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : ""
+				}
+			],
+			"defines" : 
+			[
+				{
+					"define" : "wiredtiger_python_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 11,
+					"path" : "/opt/homebrew/opt/python@3.12/Frameworks/Python.framework/Versions/3.12/include/python3.12"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 4,
+			"id" : "wiredtiger_shared::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "wiredtiger_python::@c0f7ddd75971d4d6e5e2",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/Users/barney/CLionProjects/barney_github/wiredtiger/cmake-build-debug",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "libwiredtiger.11.3.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "/opt/homebrew/opt/python@3.12/Frameworks/Python.framework/Versions/3.12/lib/libpython3.12.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libpthread.tbd",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/lib/libdl.tbd",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "wiredtiger_python",
+	"nameOnDisk" : "_wiredtiger.so",
+	"paths" : 
+	{
+		"build" : "lang/python",
+		"source" : "lang/python"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/lang/python/CMakeFiles/wiredtiger_python.dir/wiredtigerPYTHON_wrap.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/lang/python/wiredtiger.py",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"path" : "lang/python/wiredtiger.i",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

@@ -1,0 +1,74 @@
+{
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"create_test_executable"
+		],
+		"files" : 
+		[
+			"test/ctest_helpers.cmake",
+			"test/syscall/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 128,
+				"parent" : 1
+			}
+		]
+	},
+	"id" : "sync_dir_test_wt2336_base_wt2336_base::@1efc465f34555711f14e",
+	"name" : "sync_dir_test_wt2336_base_wt2336_base",
+	"paths" : 
+	{
+		"build" : "test/syscall",
+		"source" : "test/syscall"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/syscall/CMakeFiles/sync_dir_test_wt2336_base_wt2336_base",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/test/syscall/CMakeFiles/sync_dir_test_wt2336_base_wt2336_base.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

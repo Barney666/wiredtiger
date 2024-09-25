@@ -117,6 +117,8 @@ extern int __wt_block_addr_unpack(WT_SESSION_IMPL *session, WT_BLOCK *block, con
   WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
 extern int __wt_block_alloc(WT_SESSION_IMPL *session, WT_BLOCK *block, wt_off_t *offp,
   wt_off_t size) WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
+extern int __wt_block_alloc_for_compact(WT_SESSION_IMPL *session, WT_BLOCK *block, wt_off_t *offp,
+  wt_off_t size, WT_EXT* ext_reuse) WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
 extern int __wt_block_checkpoint(WT_SESSION_IMPL *session, WT_BLOCK *block, WT_ITEM *buf,
   WT_CKPT *ckptbase, bool data_checksum) WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
 extern int __wt_block_checkpoint_final(WT_SESSION_IMPL *session, WT_BLOCK *block, WT_ITEM *buf,
@@ -1368,6 +1370,8 @@ extern int __wt_session_close_internal(WT_SESSION_IMPL *session)
 extern int __wt_session_compact(WT_SESSION *wt_session, const char *uri, const char *config)
   WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
 extern int __wt_session_compact_check_timeout(WT_SESSION_IMPL *session)
+  WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
+extern int __wt_session_compact_check_wait_timeout(WT_SESSION_IMPL *session)
   WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));
 extern int __wt_session_compact_readonly(WT_SESSION *wt_session, const char *uri,
   const char *config) WT_GCC_FUNC_DECL_ATTRIBUTE((warn_unused_result));

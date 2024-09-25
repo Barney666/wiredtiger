@@ -377,6 +377,64 @@ corrupt:
 }
 
 /*
+ * __block_off_remove_for_compact --
+ *     Remove a record from an extent list only for compact command.
+ */
+static int
+__block_off_remove_for_compact(
+  WT_SESSION_IMPL *session, WT_BLOCK *block, WT_EXTLIST *el, wt_off_t off, WT_EXT **astack[WT_SKIP_MAXDEPTH])
+{
+    WT_EXT *ext;
+    WT_SIZE *szp, **sstack[WT_SKIP_MAXDEPTH];
+    u_int i;
+
+    ext = *astack[0];
+    if (ext == NULL || ext->off != off)
+        goto corrupt;
+    for (i = 0; i < ext->depth; ++i)
+        *astack[i] = ext->next[i];
+
+    if (el->track_size) {
+        __block_size_srch(el->sz, ext->size, sstack);
+        szp = *sstack[0];
+        if (szp == NULL || szp->size != ext->size)
+            WT_RET_PANIC(session, EINVAL, "extent not found in by-size list during remove");
+        __block_off_srch(szp->off, off, astack, true);
+        ext = *astack[0];
+        if (ext == NULL || ext->off != off)
+            goto corrupt;
+        for (i = 0; i < ext->depth; ++i)
+            *astack[i] = ext->next[i + ext->depth];
+        if (szp->off[0] == NULL) {
+            for (i = 0; i < szp->depth; ++i)
+                *sstack[i] = szp->next[i];
+            __wt_block_size_free(session, szp);
+        }
+    }
+#ifdef HAVE_DIAGNOSTIC
+    if (!el->track_size) {
+        bool not_null;
+        for (i = 0, not_null = false; i < ext->depth; ++i)
+            if (ext->next[i + ext->depth] != NULL)
+                not_null = true;
+        WT_ASSERT(session, not_null == false);
+    }
+#endif
+
+    --el->entries;
+    el->bytes -= (uint64_t)ext->size;
+
+    if (el->last == ext)
+        el->last = NULL;
+
+    return (0);
+
+corrupt:
+    WT_BLOCK_RET(
+      session, block, EINVAL, "attempt to remove non-existent offset from an extent list");
+}
+
+/*
  * __wt_block_off_remove_overlap --
  *     Remove a range from an extent list, where the range may be part of an overlapping entry.
  */
@@ -551,6 +609,60 @@ append:
 
     /* Add the newly allocated extent to the list of allocations. */
     WT_RET(__block_merge(session, block, &block->live.alloc, *offp, (wt_off_t)size));
+    return (0);
+}
+
+/*
+ * __wt_block_alloc_for_compact --
+ *     Alloc a chunk of space from the underlying file only for compact command.
+ */
+int
+__wt_block_alloc_for_compact(WT_SESSION_IMPL *session, WT_BLOCK *block, wt_off_t *offp, wt_off_t size, WT_EXT* ext_reuse)
+{
+    WT_EXT *ext, **estack[WT_SKIP_MAXDEPTH];
+
+    WT_ASSERT(session, WT_SESSION_BTREE_SYNC_SAFE(session, S2BT(session)));
+    WT_ASSERT(session, block->live.avail.track_size != 0);
+    WT_STAT_DATA_INCR(session, block_alloc);
+    if (size % block->allocsize != 0)
+        WT_RET_MSG(session, EINVAL,
+          "cannot allocate a block size %" PRIdMAX
+          " that is not a multiple of the allocation size %" PRIu32,
+          (intmax_t)size, block->allocsize);
+
+    __wt_verbose(session, WT_VERB_BLOCK,
+      "choose extent from range %" PRIdMAX "-%" PRIdMAX,
+      (intmax_t)ext_reuse->off, (intmax_t)(ext_reuse->off + ext_reuse->size));
+
+    /* build stack for ext_reuse */
+    __block_off_srch(block->live.avail.off, ext_reuse->off, estack, false);
+    ext = *estack[0];
+    /* save original offset of ext_reuse */
+    *offp = ext->off;
+
+    /* remove ext_reuse from avail */
+    WT_RET(__block_off_remove_for_compact(session, block, &block->live.avail, ext->off, estack));
+
+    /* put redundant part back to avail */
+    if (ext->size > size) {
+        __wt_verbose(session, WT_VERB_BLOCK,
+          "allocate %" PRIdMAX " from range %" PRIdMAX "-%" PRIdMAX ", range shrinks to %" PRIdMAX
+          "-%" PRIdMAX,
+          (intmax_t)size, (intmax_t)ext->off, (intmax_t)(ext->off + ext->size),
+          (intmax_t)(ext->off + size), (intmax_t)(ext->off + size + ext->size - size));
+
+        ext->off += size;
+        ext->size -= size;
+        WT_RET(__block_ext_insert(session, &block->live.avail, ext));
+    } else {
+        __wt_verbose(session, WT_VERB_BLOCK, "allocate range %" PRIdMAX "-%" PRIdMAX,
+          (intmax_t)ext->off, (intmax_t)(ext->off + ext->size));
+
+        __wt_block_ext_free(session, ext);
+    }
+
+    /* put ext_reuse to alloc */
+    WT_RET(__block_merge(session, block, &block->live.alloc,  *offp, (wt_off_t)size));
     return (0);
 }
 

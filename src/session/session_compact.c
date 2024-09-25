@@ -204,6 +204,38 @@ __wt_session_compact_check_timeout(WT_SESSION_IMPL *session)
 }
 
 /*
+ * __wt_session_compact_check_wait_timeout --
+ *     Check if the wait cache evict timeout has been exceeded.
+ */
+int
+__wt_session_compact_check_wait_timeout(WT_SESSION_IMPL *session)
+{
+    struct timespec cur;
+    WT_DECL_RET;
+
+    if (session->compact->begin_wait.tv_sec == -1) {
+        __wt_verbose_info(session, WT_VERB_COMPACT, "%s", "Compact operation start to wait.");
+        /* initialize, start to wait. */
+        __wt_epoch(session, &session->compact->begin_wait);
+        return (0);
+    }
+
+    __wt_epoch(session, &cur);
+
+    ret =
+      session->compact->max_wait_busy_time > WT_TIMEDIFF_SEC(cur, session->compact->begin_wait) ? 0 : ETIMEDOUT;
+    if (ret != 0) {
+        WT_STAT_CONN_INCR(session, session_table_compact_timeout);
+
+        __wt_verbose_info(session, WT_VERB_COMPACT,
+          "Compact waiting for cache eviction has timed out! The wait operation has been running for %" PRIu64
+          " second(s). Configured timeout is %" PRIu64 " second(s).",
+          WT_TIMEDIFF_SEC(cur, session->compact->begin_wait), session->compact->max_wait_busy_time);
+    }
+    return (ret);
+}
+
+/*
  * __compact_checkpoint --
  *     This function does wait and force checkpoint.
  */
@@ -303,6 +335,7 @@ __compact_worker(WT_SESSION_IMPL *session)
         WT_ERR(__compact_checkpoint(session));
         WT_ERR(__compact_checkpoint(session));
     }
+    __wt_verbose_info(session, WT_VERB_COMPACT, "compact loop %" PRIuMAX " times in all.", (uintmax_t)(loop + 1));
 
 err:
     session->compact_state = WT_COMPACT_NONE;
@@ -377,7 +410,11 @@ __wt_session_compact(WT_SESSION *wt_session, const char *uri, const char *config
     /* Compaction can be time-limited. */
     WT_ERR(__wt_config_gets(session, cfg, "timeout", &cval));
     session->compact->max_time = (uint64_t)cval.val;
+
+    session->compact->max_wait_busy_time = (uint64_t)600;
+
     __wt_epoch(session, &session->compact->begin);
+    session->compact->begin_wait.tv_sec = -1;
 
     /*
      * Find the types of data sources being compacted. This could involve opening indexes for a
